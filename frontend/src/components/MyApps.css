@@ -1,0 +1,287 @@
+.my-apps {
+  padding: 40px 0;
+}
+
+.connect-prompt {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.connect-prompt h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.connect-prompt p {
+  color: #888;
+}
+
+.apps-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.header-content h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.header-content p {
+  color: #888;
+}
+
+.new-app-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.new-app-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+.apps-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #333;
+}
+
+.filter-btn {
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  color: #888;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  color: #fff;
+}
+
+.filter-btn.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #333;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  background: #111;
+  border-radius: 12px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.create-first-button {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.app-card {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.app-card:hover {
+  border-color: #667eea;
+  transform: translateY(-4px);
+}
+
+.app-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.app-icon {
+  font-size: 32px;
+}
+
+.app-status {
+  display: flex;
+  gap: 8px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.deployed {
+  background: rgba(46, 204, 113, 0.1);
+  color: #2ecc71;
+  border: 1px solid #2ecc71;
+}
+
+.status-badge.draft {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+.app-card-body {
+  padding: 20px;
+}
+
+.app-card-body h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.app-description {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.app-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.meta-label {
+  color: #888;
+}
+
+.meta-value {
+  color: #fff;
+  font-weight: 600;
+}
+
+.meta-value.code {
+  font-family: monospace;
+  background: #0a0a0a;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.app-card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  border-top: 1px solid #333;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn.view {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: white;
+}
+
+.action-btn.view:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.action-btn.preview {
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid #667eea;
+  color: #667eea;
+}
+
+.action-btn.preview:hover {
+  background: #667eea;
+  color: white;
+}
+
+.action-btn.deploy {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.action-btn.deploy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.action-btn.explorer {
+  background: #24292e;
+  color: white;
+}
+
+.action-btn.explorer:hover {
+  background: #1b1f23;
+}

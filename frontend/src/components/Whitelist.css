@@ -1,0 +1,303 @@
+.whitelist {
+  padding: 40px 0;
+}
+
+.connect-prompt {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.connect-prompt h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.connect-prompt p {
+  color: #888;
+}
+
+.whitelist-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.whitelist-header h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.whitelist-header p {
+  color: #888;
+  font-size: 18px;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #333;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.whitelist-success {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.success-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.whitelist-success h2 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.whitelist-success > p {
+  color: #888;
+  margin-bottom: 32px;
+  font-size: 18px;
+}
+
+.nft-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 48px;
+}
+
+.nft-badge {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.nft-card h3 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.nft-card p {
+  opacity: 0.9;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.benefit-item {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+}
+
+.benefit-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.benefit-item h4 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #667eea;
+}
+
+.benefit-item p {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.whitelist-available {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.progress-section {
+  background: #111;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.progress-header h3 {
+  font-size: 20px;
+}
+
+.spots-count {
+  color: #667eea;
+  font-weight: 700;
+}
+
+.progress-bar {
+  background: #1a1a1a;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.benefits-preview {
+  background: #111;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.benefits-preview h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.benefit-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background: #0a0a0a;
+  border-radius: 8px;
+}
+
+.benefit-emoji {
+  font-size: 32px;
+}
+
+.benefit-card h4 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #667eea;
+}
+
+.benefit-card p {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.error-message {
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid #ff6b35;
+  color: #ff6b35;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.success-message {
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.success-message a {
+  color: #2ecc71;
+  text-decoration: underline;
+}
+
+.mint-button {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mint-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+.mint-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mint-note {
+  text-align: center;
+  margin-top: 16px;
+  color: #ff6b35;
+  font-weight: 600;
+}
+
+.whitelist-full {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.full-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.whitelist-full h2 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.whitelist-full p {
+  color: #888;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.full-note {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.continue-button {
+  margin-top: 32px;
+  padding: 16px 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}

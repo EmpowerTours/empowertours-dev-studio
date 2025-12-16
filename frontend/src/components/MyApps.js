@@ -1,0 +1,220 @@
+import React, { useState, useEffect } from 'react';
+import { useWallet } from '../context/WalletContext';
+import { useApi } from '../context/ApiContext';
+import { useNavigate } from 'react-router-dom';
+import './MyApps.css';
+
+export default function MyApps() {
+  const { address, isConnected } = useWallet();
+  const { apiUrl } = useApi();
+  const navigate = useNavigate();
+  const [apps, setApps] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all'); // all, deployed, draft
+
+  useEffect(() => {
+    if (isConnected && address) {
+      loadUserApps();
+    }
+  }, [isConnected, address]);
+
+  async function loadUserApps() {
+    try {
+      setLoading(true);
+      const response = await fetch(`${apiUrl}/api/apps/user/${address}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setApps(data.apps || []);
+      }
+    } catch (error) {
+      console.error('Failed to load apps:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function formatDate(timestamp) {
+    return new Date(timestamp).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  function getAppTypeIcon(type) {
+    const icons = {
+      'vrf-game': '🎲',
+      'nft-platform': '🖼️',
+      'defi-protocol': '💰',
+      'dao-governance': '🏛️',
+      'token-launch': '🪙',
+      'other': '🚀'
+    };
+    return icons[type] || icons.other;
+  }
+
+  const filteredApps = apps.filter(app => {
+    if (filter === 'all') return true;
+    if (filter === 'deployed') return app.deployed;
+    if (filter === 'draft') return !app.deployed;
+    return true;
+  });
+
+  if (!isConnected) {
+    return (
+      <div className="my-apps">
+        <div className="connect-prompt">
+          <h3>Connect Your Wallet</h3>
+          <p>Please connect your wallet to view your generated apps</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="my-apps">
+      <div className="apps-header">
+        <div className="header-content">
+          <h1>My Applications</h1>
+          <p>View and manage all your generated dApps</p>
+        </div>
+        <button
+          className="new-app-button"
+          onClick={() => navigate('/generator')}
+        >
+          + New App
+        </button>
+      </div>
+
+      <div className="apps-filters">
+        <button
+          className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+          onClick={() => setFilter('all')}
+        >
+          All ({apps.length})
+        </button>
+        <button
+          className={`filter-btn ${filter === 'deployed' ? 'active' : ''}`}
+          onClick={() => setFilter('deployed')}
+        >
+          Deployed ({apps.filter(a => a.deployed).length})
+        </button>
+        <button
+          className={`filter-btn ${filter === 'draft' ? 'active' : ''}`}
+          onClick={() => setFilter('draft')}
+        >
+          Drafts ({apps.filter(a => !a.deployed).length})
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading your apps...</p>
+        </div>
+      ) : filteredApps.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">📁</div>
+          <h3>No apps yet</h3>
+          <p>
+            {filter === 'all'
+              ? "You haven't generated any apps yet. Start by creating your first dApp!"
+              : `No ${filter} apps found.`}
+          </p>
+          <button
+            className="create-first-button"
+            onClick={() => navigate('/generator')}
+          >
+            Create Your First App
+          </button>
+        </div>
+      ) : (
+        <div className="apps-grid">
+          {filteredApps.map((app) => (
+            <div key={app.id} className="app-card">
+              <div className="app-card-header">
+                <div className="app-icon">{getAppTypeIcon(app.appType)}</div>
+                <div className="app-status">
+                  {app.deployed ? (
+                    <span className="status-badge deployed">Deployed</span>
+                  ) : (
+                    <span className="status-badge draft">Draft</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="app-card-body">
+                <h3>{app.name || 'Untitled App'}</h3>
+                <p className="app-description">
+                  {app.description || 'No description provided'}
+                </p>
+
+                <div className="app-meta">
+                  <div className="meta-item">
+                    <span className="meta-label">Type:</span>
+                    <span className="meta-value">{app.appType || 'Unknown'}</span>
+                  </div>
+                  <div className="meta-item">
+                    <span className="meta-label">Created:</span>
+                    <span className="meta-value">{formatDate(app.createdAt)}</span>
+                  </div>
+                  {app.contractAddress && (
+                    <div className="meta-item">
+                      <span className="meta-label">Contract:</span>
+                      <span className="meta-value code">
+                        {app.contractAddress.slice(0, 6)}...{app.contractAddress.slice(-4)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="app-card-actions">
+                <button
+                  className="action-btn view"
+                  onClick={() => navigate(`/code-preview/${app.id}`)}
+                >
+                  View Code
+                </button>
+                {app.previewUrl && (
+                  <button
+                    className="action-btn preview"
+                    onClick={() => window.open(app.previewUrl, '_blank')}
+                  >
+                    Preview
+                  </button>
+                )}
+                {!app.deployed && (
+                  <button
+                    className="action-btn deploy"
+                    onClick={() => navigate(`/testnet/${app.id}`)}
+                  >
+                    Deploy
+                  </button>
+                )}
+                {app.deployed && app.contractAddress && (
+                  <button
+                    className="action-btn explorer"
+                    onClick={() =>
+                      window.open(
+                        `https://testnet.monadscan.com/address/${app.contractAddress}`,
+                        '_blank'
+                      )
+                    }
+                  >
+                    Explorer
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
