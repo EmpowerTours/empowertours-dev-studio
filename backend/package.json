@@ -19,7 +19,8 @@
     "jsonwebtoken": "^9.0.2",
     "form-data": "^4.0.0",
     "solc": "^0.8.20",
-    "@octokit/rest": "^20.0.2"
+    "@octokit/rest": "^20.0.2",
+    "esbuild": "^0.19.8"
   },
   "devDependencies": {
     "nodemon": "^3.0.2",
