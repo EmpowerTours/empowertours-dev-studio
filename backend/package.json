@@ -13,7 +13,7 @@
     "cors": "^2.8.5",
     "helmet": "^7.1.0",
     "express-rate-limit": "^7.1.5",
-    "dotenv": "^0.16.3",
+    "dotenv": "^16.4.5",
     "ethers": "^6.13.2",
     "axios": "^1.6.5",
     "jsonwebtoken": "^9.0.2",
