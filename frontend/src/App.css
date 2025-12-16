@@ -1,0 +1,36 @@
+.App {
+  min-height: 100vh;
+  background: #0a0a0a;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 80px;
+  border-top: 1px solid #333;
+  color: #888;
+}
+
+.footer p {
+  margin: 10px 0;
+}
+
+.footer-links {
+  font-size: 14px;
+}
+
+.footer-links a {
+  color: #4a9eff;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

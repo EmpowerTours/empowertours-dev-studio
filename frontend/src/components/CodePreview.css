@@ -1,0 +1,163 @@
+.code-preview {
+  background: #111;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-banner {
+  background: #ff6b35;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.code-header {
+  padding: 32px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.code-header h2 {
+  margin-bottom: 8px;
+}
+
+.code-header p {
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feature-tag {
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid #667eea;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #667eea;
+}
+
+.download-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.code-body {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 500px;
+}
+
+.file-sidebar {
+  background: #0a0a0a;
+  border-right: 1px solid #333;
+  padding: 16px;
+}
+
+.category-header {
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.category-header:hover {
+  background: #1a1a1a;
+}
+
+.category-header.active {
+  background: #667eea;
+  color: white;
+}
+
+.file-item {
+  padding: 10px 12px;
+  padding-left: 24px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.file-item:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.file-item.active {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.code-viewer {
+  background: #0a0a0a;
+}
+
+.viewer-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-name {
+  font-family: monospace;
+  color: #888;
+}
+
+.copy-button {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.copy-button:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.no-file-selected {
+  padding: 100px 40px;
+  text-align: center;
+  color: #666;
+}
+
+.cost-info {
+  padding: 24px 32px;
+  border-top: 1px solid #333;
+  background: #0a0a0a;
+}
+
+.cost-info h4 {
+  margin-bottom: 12px;
+  color: #667eea;
+}
+
+.cost-info p {
+  color: #888;
+  font-size: 14px;
+}
