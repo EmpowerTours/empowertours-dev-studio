@@ -18,56 +18,43 @@ import { ApiProvider } from './context/ApiContext';
 
 function App() {
   const [isConnected, setIsConnected] = useState(false);
-  const [account, setAccount] = useState(null);
-  const [network, setNetwork] = useState(null);
 
   // Check if wallet is connected on mount
   useEffect(() => {
+    const checkConnection = async () => {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const accounts = await provider.listAccounts();
+          setIsConnected(accounts.length > 0);
+        } catch (error) {
+          console.error('Failed to check connection:', error);
+        }
+      }
+    };
+
+    const setupListeners = () => {
+      if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.on('accountsChanged', handleAccountsChanged);
+        window.ethereum.on('chainChanged', handleChainChanged);
+      }
+    };
+
+    const handleAccountsChanged = (accounts) => {
+      if (accounts.length === 0) {
+        setIsConnected(false);
+      } else {
+        window.location.reload();
+      }
+    };
+
+    const handleChainChanged = () => {
+      window.location.reload();
+    };
+
     checkConnection();
     setupListeners();
   }, []);
-
-  const checkConnection = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await provider.listAccounts();
-
-        if (accounts.length > 0) {
-          const signer = await provider.getSigner();
-          const address = await signer.getAddress();
-          const network = await provider.getNetwork();
-
-          setAccount(address);
-          setNetwork(network);
-          setIsConnected(true);
-        }
-      } catch (error) {
-        console.error('Failed to check connection:', error);
-      }
-    }
-  };
-
-  const setupListeners = () => {
-    if (typeof window.ethereum !== 'undefined') {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
-      window.ethereum.on('chainChanged', handleChainChanged);
-    }
-  };
-
-  const handleAccountsChanged = (accounts) => {
-    if (accounts.length === 0) {
-      setIsConnected(false);
-      setAccount(null);
-    } else {
-      setAccount(accounts[0]);
-      window.location.reload();
-    }
-  };
-
-  const handleChainChanged = () => {
-    window.location.reload();
-  };
 
   return (
     <Router>

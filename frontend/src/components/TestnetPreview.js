@@ -5,7 +5,7 @@ import { useWallet } from '../context/WalletContext';
 import './TestnetPreview.css';
 
 const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
-  const { signer, account, provider, API_URL, authToken } = useWallet();
+  const { signer, API_URL, authToken } = useWallet();
 
   const [compiling, setCompiling] = useState(false);
   const [compiled, setCompiled] = useState(null);
@@ -23,6 +23,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
     if (generatedCode?.contracts && Object.keys(generatedCode.contracts).length > 0) {
       compileContracts();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [generatedCode]);
 
   const compileContracts = async () => {
@@ -154,9 +155,6 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
       alert('Please deploy contract first');
       return;
     }
-
-    // Create contract instance
-    const contract = new ethers.Contract(contractAddress, contractInterface, signer);
 
     // Extract read and write functions
     const readFunctions = [];

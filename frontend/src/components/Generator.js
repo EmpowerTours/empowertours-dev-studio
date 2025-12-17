@@ -23,7 +23,6 @@ const Generator = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
   const [previewData, setPreviewData] = useState(null);
   const [activeTab, setActiveTab] = useState('prompt'); // prompt, code, testnet
 
@@ -39,7 +38,6 @@ const Generator = () => {
     try {
       const preview = await previewGeneration(prompt, appType);
       setPreviewData(preview);
-      setShowPreview(true);
       setActiveTab('code');
     } catch (err) {
       setError(err.error || 'Preview generation failed');

@@ -32,7 +32,7 @@ const STUDIO_ABI = [
 ];
 
 export const ContractProvider = ({ children }) => {
-  const { signer, account, isConnected } = useWallet();
+  const { signer, account } = useWallet();
   const [contract, setContract] = useState(null);
   const [credits, setCredits] = useState(0);
   const [isWhitelisted, setIsWhitelisted] = useState(false);
@@ -56,6 +56,7 @@ export const ContractProvider = ({ children }) => {
     if (contract && account) {
       loadUserData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account]);
 
   const loadUserData = async () => {

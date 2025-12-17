@@ -20,6 +20,7 @@ export default function Dashboard() {
     if (isConnected && contract && address) {
       loadUserStats();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, contract, address]);
 
   async function loadUserStats() {

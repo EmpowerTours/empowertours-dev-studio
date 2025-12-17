@@ -23,6 +23,7 @@ export default function Credits() {
     if (isConnected && contract && address) {
       loadCreditData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, contract, address]);
 
   async function loadCreditData() {

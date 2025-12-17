@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useWallet } from '../context/WalletContext';
 import { useContract } from '../context/ContractContext';
-import { ethers } from 'ethers';
 import './Whitelist.css';
 
 export default function Whitelist() {
@@ -22,6 +21,7 @@ export default function Whitelist() {
     if (isConnected && contract && address) {
       loadWhitelistStatus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, contract, address]);
 
   async function loadWhitelistStatus() {

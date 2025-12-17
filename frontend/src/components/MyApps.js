@@ -16,6 +16,7 @@ export default function MyApps() {
     if (isConnected && address) {
       loadUserApps();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, address]);
 
   async function loadUserApps() {
