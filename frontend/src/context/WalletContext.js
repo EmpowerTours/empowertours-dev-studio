@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import { useNetwork } from './NetworkContext';
@@ -26,17 +26,7 @@ export const WalletProvider = ({ children }) => {
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
-  useEffect(() => {
-    checkConnection();
-
-    // Load saved auth token
-    const savedToken = localStorage.getItem('authToken');
-    if (savedToken) {
-      setAuthToken(savedToken);
-    }
-  }, []);
-
-  const checkConnection = async () => {
+  const checkConnection = useCallback(async () => {
     if (typeof window.ethereum !== 'undefined') {
       try {
         const provider = new ethers.BrowserProvider(window.ethereum);
@@ -58,7 +48,17 @@ export const WalletProvider = ({ children }) => {
         console.error('Failed to check connection:', error);
       }
     }
-  };
+  }, [networkConfig.chainIdInt]);
+
+  useEffect(() => {
+    checkConnection();
+
+    // Load saved auth token
+    const savedToken = localStorage.getItem('authToken');
+    if (savedToken) {
+      setAuthToken(savedToken);
+    }
+  }, [checkConnection]);
 
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
