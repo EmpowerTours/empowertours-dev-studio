@@ -1,0 +1,22 @@
+:{$PORT}
+
+root * .
+file_server
+
+encode gzip
+
+header {
+    # Security headers
+    X-Content-Type-Options nosniff
+    X-Frame-Options DENY
+    X-XSS-Protection "1; mode=block"
+    Referrer-Policy "strict-origin-when-cross-origin"
+
+    # CORS for IPFS and blockchain
+    Access-Control-Allow-Origin *
+    Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers "Content-Type"
+}
+
+# Serve index.html for all routes (SPA support)
+try_files {path} {path}/ /index.html
