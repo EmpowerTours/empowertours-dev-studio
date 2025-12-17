@@ -12,6 +12,8 @@ import Whitelist from './components/Whitelist';
 import Credits from './components/Credits';
 
 // Context
+import { NetworkProvider } from './context/NetworkContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { WalletProvider } from './context/WalletContext';
 import { ContractProvider } from './context/ContractContext';
 import { ApiProvider } from './context/ApiContext';
@@ -58,11 +60,13 @@ function App() {
 
   return (
     <Router>
-      <WalletProvider>
-        <ContractProvider>
-          <ApiProvider>
-            <div className="App">
-              <Navbar />
+      <ThemeProvider>
+        <NetworkProvider>
+          <WalletProvider>
+            <ContractProvider>
+              <ApiProvider>
+                <div className="App">
+                  <Navbar />
 
               <div className="container">
                 <Routes>
@@ -100,10 +104,12 @@ function App() {
                   </a>
                 </p>
               </footer>
-            </div>
-          </ApiProvider>
-        </ContractProvider>
-      </WalletProvider>
+                </div>
+              </ApiProvider>
+            </ContractProvider>
+          </WalletProvider>
+        </NetworkProvider>
+      </ThemeProvider>
     </Router>
   );
 }

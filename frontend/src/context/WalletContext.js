@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
+import { useNetwork } from './NetworkContext';
 
 const WalletContext = createContext();
 
@@ -13,6 +14,7 @@ export const useWallet = () => {
 };
 
 export const WalletProvider = ({ children }) => {
+  const { networkConfig } = useNetwork();
   const [account, setAccount] = useState(null);
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
@@ -21,18 +23,6 @@ export const WalletProvider = ({ children }) => {
   const [isCorrectNetwork, setIsCorrectNetwork] = useState(false);
   const [authToken, setAuthToken] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const MONAD_TESTNET = {
-    chainId: '0xa1f6', // 41454 in hex
-    chainName: 'Monad Testnet',
-    nativeCurrency: {
-      name: 'MON',
-      symbol: 'MON',
-      decimals: 18
-    },
-    rpcUrls: ['https://testnet-rpc.monad.xyz'],
-    blockExplorerUrls: ['https://testnet.monadscan.com']
-  };
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
@@ -62,7 +52,7 @@ export const WalletProvider = ({ children }) => {
           setAccount(address);
           setNetwork(network);
           setIsConnected(true);
-          setIsCorrectNetwork(network.chainId === BigInt(41454));
+          setIsCorrectNetwork(network.chainId === BigInt(networkConfig.chainIdInt));
         }
       } catch (error) {
         console.error('Failed to check connection:', error);
@@ -92,11 +82,11 @@ export const WalletProvider = ({ children }) => {
       setIsConnected(true);
 
       // Check network
-      const correctNetwork = network.chainId === BigInt(41454);
+      const correctNetwork = network.chainId === BigInt(networkConfig.chainIdInt);
       setIsCorrectNetwork(correctNetwork);
 
       if (!correctNetwork) {
-        await switchToMonadTestnet();
+        await switchToNetwork();
       }
 
       // Authenticate with backend
@@ -110,11 +100,11 @@ export const WalletProvider = ({ children }) => {
     }
   };
 
-  const switchToMonadTestnet = async () => {
+  const switchToNetwork = async () => {
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: MONAD_TESTNET.chainId }]
+        params: [{ chainId: networkConfig.chainId }]
       });
 
       setIsCorrectNetwork(true);
@@ -124,13 +114,19 @@ export const WalletProvider = ({ children }) => {
         try {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
-            params: [MONAD_TESTNET]
+            params: [{
+              chainId: networkConfig.chainId,
+              chainName: networkConfig.name,
+              nativeCurrency: networkConfig.nativeCurrency,
+              rpcUrls: [networkConfig.rpcUrl],
+              blockExplorerUrls: [networkConfig.explorerUrl]
+            }]
           });
 
           setIsCorrectNetwork(true);
         } catch (addError) {
           console.error('Failed to add network:', addError);
-          alert('Failed to add Monad Testnet. Please add it manually.');
+          alert(`Failed to add ${networkConfig.name}. Please add it manually.`);
         }
       } else {
         console.error('Failed to switch network:', error);
@@ -189,8 +185,9 @@ export const WalletProvider = ({ children }) => {
     loading,
     connectWallet,
     disconnectWallet,
-    switchToMonadTestnet,
-    API_URL
+    switchToNetwork,
+    API_URL,
+    address: account
   };
 
   return (
