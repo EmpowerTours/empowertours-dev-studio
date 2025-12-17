@@ -11,6 +11,12 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
  * @notice AI-powered dApp generation platform with Grok 4.1 integration
  * @dev Pay-per-prompt model with whitelist NFT perks
  *
+ * Payment Model:
+ * - MON only (TOURS payments removed for simplicity)
+ * - 100 MON per generation (50 MON for whitelisted users)
+ * - 1,000 whitelist spots available
+ * - 2,000 TOURS airdrop for whitelist members
+ *
  * Gas Estimates (at 100 gwei):
  * - Deploy: ~2,400,000 gas = 0.24 MON
  * - buyCreditsWithMON: ~65,000 gas = 0.0065 MON
@@ -26,7 +32,7 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     uint256 public constant PROMPT_COST = 100 ether; // 100 MON
 
     /// @notice Whitelist spots
-    uint16 public constant WHITELIST_MAX = 50;
+    uint16 public constant WHITELIST_MAX = 1000;
 
     /// @notice Whitelist discount percentage
     uint8 public constant WHITELIST_DISCOUNT = 50; // 50% off
@@ -69,7 +75,7 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     // Events
     // ============================================
 
-    event CreditsPurchased(address indexed user, uint256 amount, uint256 cost, bool usedMON);
+    event CreditsPurchased(address indexed user, uint256 amount, uint256 cost);
     event PromptGenerated(address indexed user, uint256 indexed tokenId, string appType);
     event WhitelistMinted(address indexed user, uint256 indexed tokenId, uint256 timestamp);
     event ToursAirdropped(address indexed user, uint256 amount);
@@ -134,35 +140,7 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
             payable(msg.sender).transfer(msg.value - cost);
         }
 
-        emit CreditsPurchased(msg.sender, numPrompts, cost, true);
-    }
-
-    /**
-     * @notice Buy credits with $TOURS tokens
-     * @param numPrompts Number of credits to purchase
-     */
-    function buyCreditsWithTOURS(uint256 numPrompts) external nonReentrant {
-        if (numPrompts == 0) revert InvalidAmount();
-
-        // 1000 TOURS per prompt (adjustable based on market)
-        uint256 toursCost = 1000 ether * numPrompts;
-
-        if (isWhitelisted[msg.sender]) {
-            toursCost = (toursCost * WHITELIST_DISCOUNT) / 100;
-        }
-
-        require(
-            toursToken.transferFrom(msg.sender, address(this), toursCost),
-            "TOURS transfer failed"
-        );
-
-        credits[msg.sender] += numPrompts;
-
-        if (firstGeneration[msg.sender] == 0) {
-            firstGeneration[msg.sender] = block.timestamp;
-        }
-
-        emit CreditsPurchased(msg.sender, numPrompts, toursCost, false);
+        emit CreditsPurchased(msg.sender, numPrompts, cost);
     }
 
     /**
@@ -207,7 +185,7 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Mint whitelist NFT (first 50 paid users)
+     * @notice Mint whitelist NFT (first 1,000 paid users)
      * @param appMetadata IPFS CID for whitelist perks
      * @return tokenId Minted whitelist token ID
      */
@@ -329,22 +307,23 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @notice Withdraw $TOURS to owner
+     * @notice Fund contract with $TOURS for airdrops
+     * @dev Owner must approve this contract to spend TOURS first
+     */
+    function fundTOURS(uint256 amount) external onlyOwner {
+        require(
+            toursToken.transferFrom(msg.sender, address(this), amount),
+            "Transfer failed"
+        );
+    }
+
+    /**
+     * @notice Withdraw $TOURS to owner (for emergency recovery)
      */
     function withdrawTOURS() external onlyOwner {
         uint256 balance = toursToken.balanceOf(address(this));
         require(balance > 0, "No TOURS");
         toursToken.transfer(owner(), balance);
-    }
-
-    /**
-     * @notice Fund contract with $TOURS for airdrops
-     */
-    function fundTOURS(uint256 amount) external {
-        require(
-            toursToken.transferFrom(msg.sender, address(this), amount),
-            "Transfer failed"
-        );
     }
 
     receive() external payable {}
