@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumble Mediation | Monad Blockchain</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">⚖️ Rumble Mediation</div>
+            <div class="network-indicator" id="networkIndicator">
+                <span class="status-dot"></span>
+                <span id="networkName">Not Connected</span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>On-Chain Mediation Agreement</h1>
+            <p class="subtitle">Blockchain-backed resolution between Rumble Inc. and Earvin Gallardo</p>
+            <p class="powered-by">Secured by Monad Blockchain</p>
+        </section>
+
+        <!-- Connection Section -->
+        <section class="connection-section" id="connectionSection">
+            <button class="btn-primary btn-large" id="connectBtn">
+                Connect Wallet
+            </button>
+            <p class="wallet-address" id="walletAddress"></p>
+        </section>
+
+        <!-- Agreement Options -->
+        <section class="options-section" id="optionsSection" style="display: none;">
+            <h2>Select Agreement Type</h2>
+
+            <!-- Partnership Option -->
+            <div class="option-card partnership">
+                <div class="option-header">
+                    <h3>🤝 Partnership Agreement</h3>
+                    <div class="amount">100,000,000 MON</div>
+                </div>
+                <div class="option-body">
+                    <ul class="benefits-list">
+                        <li>✓ 5% fully diluted equity (non-forfeitable)</li>
+                        <li>✓ Same class as founders/common stock</li>
+                        <li>✓ No clawback, no repurchase, no drag-along</li>
+                        <li>✓ Creator-only termination authority</li>
+                        <li>✓ Bond returned if partnership ends</li>
+                        <li>✓ Full content restoration & promotion</li>
+                    </ul>
+                    <div class="terms-input">
+                        <label for="partnershipTerms">Partnership Terms (IPFS Hash):</label>
+                        <input
+                            type="text"
+                            id="partnershipTerms"
+                            placeholder="QmXxxx... (Full legal partnership agreement)"
+                            class="terms-hash-input"
+                        >
+                    </div>
+                    <div class="terms-input">
+                        <label for="partnershipEquity">Equity Certificate (IPFS Hash):</label>
+                        <input
+                            type="text"
+                            id="partnershipEquity"
+                            placeholder="QmXxxx... (Equity agreement with 5% terms)"
+                            class="terms-hash-input"
+                        >
+                    </div>
+                    <button class="btn-secondary btn-block" id="proposePartnershipBtn">
+                        Propose Partnership
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settlement Option -->
+            <div class="option-card settlement">
+                <div class="option-header">
+                    <h3>📄 Settlement Agreement</h3>
+                    <div class="amount">50,000,000 MON</div>
+                </div>
+                <div class="option-body">
+                    <ul class="benefits-list">
+                        <li>✓ One-time settlement payment</li>
+                        <li>✓ Immediate resolution</li>
+                        <li>✓ Content removal upon acceptance</li>
+                        <li>✓ Funds released after 48h timelock</li>
+                        <li>✓ Final and binding agreement</li>
+                    </ul>
+                    <div class="terms-input">
+                        <label for="settlementTerms">IPFS Terms Hash:</label>
+                        <input
+                            type="text"
+                            id="settlementTerms"
+                            placeholder="QmXxxx... (IPFS hash of agreement document)"
+                            class="terms-hash-input"
+                        >
+                    </div>
+                    <button class="btn-secondary btn-block" id="proposeSettlementBtn">
+                        Propose Settlement
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Agreement Status -->
+        <section class="status-section" id="statusSection">
+            <h2>Agreement Status</h2>
+            <div class="status-card" id="statusCard">
+                <div class="status-loading">Loading agreement status...</div>
+            </div>
+        </section>
+
+        <!-- Contract Information -->
+        <section class="info-section">
+            <h2>Smart Contract Details</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Contract Address</div>
+                    <div class="info-value" id="contractAddress">
+                        <span class="placeholder">Deploy contract first</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Creator</div>
+                    <div class="info-value" id="creatorAddress">
+                        <span class="placeholder">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Agreement Nonce</div>
+                    <div class="info-value" id="agreementNonce">
+                        <span class="placeholder">0</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Contract Balance</div>
+                    <div class="info-value" id="contractBalance">
+                        <span class="placeholder">0 MON</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Features -->
+        <section class="security-section">
+            <h2>🔒 Security Features</h2>
+            <div class="security-grid">
+                <div class="security-item">
+                    <div class="security-icon">🛡️</div>
+                    <h4>Reentrancy Protected</h4>
+                    <p>Multi-layer protection against recursive attacks</p>
+                </div>
+                <div class="security-item">
+                    <div class="security-icon">⏱️</div>
+                    <h4>Timelock Security</h4>
+                    <p>24h review + 48h withdrawal delays</p>
+                </div>
+                <div class="security-item">
+                    <div class="security-icon">🔐</div>
+                    <h4>Pull Payments</h4>
+                    <p>Beneficiaries control their own withdrawals</p>
+                </div>
+                <div class="security-item">
+                    <div class="security-icon">⚡</div>
+                    <h4>Immutable Bond</h4>
+                    <p>Partnerships secured on-chain permanently</p>
+                </div>
+                <div class="security-item">
+                    <div class="security-icon">🚨</div>
+                    <h4>Emergency Pause</h4>
+                    <p>Creator can freeze contract if needed</p>
+                </div>
+                <div class="security-item">
+                    <div class="security-icon">📋</div>
+                    <h4>Full Audit Trail</h4>
+                    <p>Every action logged on blockchain</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by Monad Blockchain | Created by EmpowerTours</p>
+            <p class="footer-links">
+                <a href="https://monad.xyz" target="_blank">Monad</a> •
+                <a href="https://empowertours.com" target="_blank">EmpowerTours</a> •
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
