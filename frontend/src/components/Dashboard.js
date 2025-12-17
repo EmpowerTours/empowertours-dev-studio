@@ -19,6 +19,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (isConnected && contract && address) {
       loadUserStats();
+    } else if (isConnected && !contract) {
+      // Contract not deployed yet, show empty state
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, contract, address]);
@@ -26,16 +29,24 @@ export default function Dashboard() {
   async function loadUserStats() {
     try {
       setLoading(true);
-      const credits = await contract.credits(address);
-      const whitelistCount = await contract.whitelistCount();
-      const whitelistMax = await contract.WHITELIST_MAX();
 
-      // Check if user has whitelist NFT (token ID 0 reserved for whitelist NFTs)
+      // Use Promise.allSettled to handle partial failures
+      const results = await Promise.allSettled([
+        contract.credits(address),
+        contract.whitelistCount(),
+        contract.WHITELIST_MAX(),
+        contract.balanceOf(address)
+      ]);
+
+      const credits = results[0].status === 'fulfilled' ? Number(results[0].value) : 0;
+      const whitelistCount = results[1].status === 'fulfilled' ? Number(results[1].value) : 0;
+      const whitelistMax = results[2].status === 'fulfilled' ? Number(results[2].value) : 50;
+      const balance = results[3].status === 'fulfilled' ? results[3].value : 0;
+
+      // Check if user has whitelist NFT
       let isWhitelisted = false;
-      try {
-        const balance = await contract.balanceOf(address);
-        if (balance > 0) {
-          // Check if any token is a whitelist NFT
+      if (balance > 0) {
+        try {
           for (let i = 0; i < balance; i++) {
             const tokenId = await contract.tokenOfOwnerByIndex(address, i);
             const tokenURI = await contract.tokenURI(tokenId);
@@ -44,19 +55,26 @@ export default function Dashboard() {
               break;
             }
           }
+        } catch (err) {
+          console.error('Error checking whitelist status:', err);
         }
-      } catch (err) {
-        console.error('Error checking whitelist status:', err);
       }
 
       setStats({
-        creditsRemaining: Number(credits),
+        creditsRemaining: credits,
         appsGenerated: 0, // Will be fetched from backend API
         isWhitelisted,
-        whitelistSpots: Number(whitelistMax) - Number(whitelistCount)
+        whitelistSpots: whitelistMax - whitelistCount
       });
     } catch (error) {
       console.error('Failed to load user stats:', error);
+      // Set default values on error
+      setStats({
+        creditsRemaining: 0,
+        appsGenerated: 0,
+        isWhitelisted: false,
+        whitelistSpots: 50
+      });
     } finally {
       setLoading(false);
     }

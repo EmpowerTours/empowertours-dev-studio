@@ -10,10 +10,11 @@
 .dashboard-hero h1 {
   font-size: 36px;
   margin-bottom: 12px;
+  color: var(--text-primary);
 }
 
 .dashboard-hero p {
-  color: #888;
+  color: var(--text-tertiary);
   font-size: 18px;
 }
 
@@ -25,20 +26,22 @@
 }
 
 .connect-card {
-  background: #111;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 48px;
   text-align: center;
   max-width: 500px;
+  border: 1px solid var(--border-color);
 }
 
 .connect-card h3 {
   font-size: 24px;
   margin-bottom: 12px;
+  color: var(--text-primary);
 }
 
 .connect-card p {
-  color: #888;
+  color: var(--text-tertiary);
 }
 
 .loading-state {
@@ -49,11 +52,15 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #333;
-  border-top-color: #667eea;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 16px;
+}
+
+.loading-state p {
+  color: var(--text-secondary);
 }
 
 @keyframes spin {
@@ -68,17 +75,18 @@
 }
 
 .stat-card {
-  background: #111;
-  border: 1px solid #333;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 32px;
   text-align: center;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .stat-card.whitelisted {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.05);
+  border-color: var(--accent-primary);
+  background: var(--bg-tertiary);
 }
 
 .stat-icon {
@@ -90,11 +98,11 @@
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 8px;
-  color: #667eea;
+  color: var(--accent-primary);
 }
 
 .stat-label {
-  color: #888;
+  color: var(--text-tertiary);
   font-size: 14px;
   margin-bottom: 16px;
   display: block;
@@ -103,25 +111,25 @@
 .stat-action {
   width: 100%;
   padding: 10px;
-  background: #1a1a1a;
-  border: 1px solid #333;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s;
 }
 
 .stat-action:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 .discount-badge {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   color: white;
   padding: 4px 12px;
   border-radius: 12px;
@@ -136,6 +144,7 @@
 .quick-actions h3 {
   font-size: 24px;
   margin-bottom: 24px;
+  color: var(--text-primary);
 }
 
 .action-grid {
@@ -145,8 +154,8 @@
 }
 
 .action-card {
-  background: #111;
-  border: 2px solid #333;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   padding: 32px;
   cursor: pointer;
@@ -154,18 +163,19 @@
 }
 
 .action-card:hover {
-  border-color: #667eea;
+  border-color: var(--accent-primary);
   transform: translateY(-4px);
 }
 
 .action-card.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-color: transparent;
+  color: white;
 }
 
 .action-card.highlight {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
+  border-color: var(--accent-primary);
+  background: var(--bg-tertiary);
 }
 
 .action-icon {
@@ -176,11 +186,16 @@
 .action-card h4 {
   font-size: 20px;
   margin-bottom: 8px;
+  color: var(--text-primary);
 }
 
 .action-card p {
-  color: #888;
+  color: var(--text-tertiary);
   font-size: 14px;
+}
+
+.action-card.primary h4 {
+  color: white;
 }
 
 .action-card.primary p {
@@ -194,6 +209,7 @@
 .features-section h3 {
   font-size: 24px;
   margin-bottom: 24px;
+  color: var(--text-primary);
 }
 
 .features-grid {
@@ -203,10 +219,15 @@
 }
 
 .feature-item {
-  background: #111;
-  border: 1px solid #333;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  border-color: var(--accent-primary);
 }
 
 .feature-icon {
@@ -218,11 +239,11 @@
 .feature-item h4 {
   font-size: 18px;
   margin-bottom: 8px;
-  color: #667eea;
+  color: var(--accent-primary);
 }
 
 .feature-item p {
-  color: #888;
+  color: var(--text-tertiary);
   font-size: 14px;
   line-height: 1.6;
 }
