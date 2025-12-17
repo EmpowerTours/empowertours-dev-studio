@@ -84,11 +84,30 @@ const contractBalanceEl = document.getElementById('contractBalance');
 // ============ Initialization ============
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check if ethers loaded
+    if (typeof ethers === 'undefined') {
+        showToast('Failed to load Web3 library. Please refresh the page.', 'error');
+        statusCard.innerHTML = '<div class="status-loading" style="color: var(--danger);">Failed to load Web3 library</div>';
+        return;
+    }
+
     // Check if MetaMask installed
     if (typeof window.ethereum === 'undefined') {
         showToast('Please install MetaMask to use this dApp', 'error');
         connectBtn.disabled = true;
+        statusCard.innerHTML = '<div class="status-loading">Connect wallet to view agreement status</div>';
         return;
+    }
+
+    // Display contract address or warning
+    if (CONFIG.CONTRACT_ADDRESS === 'DEPLOY_CONTRACT_FIRST') {
+        contractAddressEl.innerHTML = '<span class="placeholder" style="color: var(--warning);">⚠️ Contract not deployed yet</span>';
+        showToast('Contract not deployed. Deploy contract first before using.', 'error');
+        statusCard.innerHTML = '<div class="status-loading" style="color: var(--danger);">Contract not deployed</div>';
+    } else {
+        contractAddressEl.textContent = CONFIG.CONTRACT_ADDRESS;
+        // Set initial loading state
+        statusCard.innerHTML = '<div class="status-loading">Connect wallet to view agreement status</div>';
     }
 
     // Check if already connected
@@ -101,14 +120,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     connectBtn.addEventListener('click', connectWallet);
     proposePartnershipBtn.addEventListener('click', proposePartnership);
     proposeSettlementBtn.addEventListener('click', proposeSettlement);
-
-    // Display contract address or warning
-    if (CONFIG.CONTRACT_ADDRESS === 'DEPLOY_CONTRACT_FIRST') {
-        contractAddressEl.innerHTML = '<span class="placeholder" style="color: var(--warning);">⚠️ Contract not deployed yet</span>';
-        showToast('Contract not deployed. Deploy contract first before using.', 'error');
-    } else {
-        contractAddressEl.textContent = CONFIG.CONTRACT_ADDRESS;
-    }
 
     // Security notice
     console.log('%c⚠️ SECURITY WARNING', 'color: red; font-size: 20px; font-weight: bold;');
