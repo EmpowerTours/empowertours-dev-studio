@@ -41,78 +41,130 @@
             <p class="wallet-address" id="walletAddress"></p>
         </section>
 
-        <!-- Agreement Options -->
+        <!-- Agreement Builder -->
         <section class="options-section" id="optionsSection" style="display: none;">
-            <h2>Select Agreement Type</h2>
+            <h2>Build Your Agreement</h2>
 
-            <!-- Partnership Option -->
-            <div class="option-card partnership">
-                <div class="option-header">
-                    <h3>🤝 Partnership Agreement</h3>
-                    <div class="amount">100,000,000 MON</div>
+            <div class="agreement-type-selector">
+                <button class="type-btn active" id="partnershipTypeBtn" data-type="partnership">
+                    🤝 Partnership Agreement
+                </button>
+                <button class="type-btn" id="settlementTypeBtn" data-type="settlement">
+                    📄 Settlement Agreement
+                </button>
+            </div>
+
+            <!-- Partnership Form -->
+            <div class="agreement-form" id="partnershipForm">
+                <div class="form-section">
+                    <h3>Payment Terms</h3>
+                    <div class="form-group">
+                        <label>Bond Amount (MON)</label>
+                        <input type="text" id="partnershipBondAmount" readonly class="readonly-input">
+                        <p class="form-help">Performance bond held in escrow until partnership ends</p>
+                    </div>
                 </div>
-                <div class="option-body">
-                    <ul class="benefits-list">
-                        <li>✓ 5% fully diluted equity (non-forfeitable)</li>
-                        <li>✓ Same class as founders/common stock</li>
-                        <li>✓ No clawback, no repurchase, no drag-along</li>
-                        <li>✓ Creator-only termination authority</li>
-                        <li>✓ Bond returned if partnership ends</li>
-                        <li>✓ Full content restoration & promotion</li>
-                    </ul>
-                    <div class="terms-input">
-                        <label for="partnershipTerms">Partnership Terms (IPFS Hash):</label>
-                        <input
-                            type="text"
-                            id="partnershipTerms"
-                            placeholder="QmXxxx... (Full legal partnership agreement)"
-                            class="terms-hash-input"
-                        >
+
+                <div class="form-section">
+                    <h3>Equity Terms</h3>
+                    <div class="form-group">
+                        <label>Equity Percentage</label>
+                        <input type="text" id="partnershipEquityPct" readonly class="readonly-input">
+                        <p class="form-help">Fully diluted, non-forfeitable equity grant</p>
                     </div>
-                    <div class="terms-input">
-                        <label for="partnershipEquity">Equity Certificate (IPFS Hash):</label>
-                        <input
-                            type="text"
-                            id="partnershipEquity"
-                            placeholder="QmXxxx... (Equity agreement with 5% terms)"
-                            class="terms-hash-input"
-                        >
+                    <div class="form-group">
+                        <label>Equity Class</label>
+                        <input type="text" value="Same class as founders/common stock" readonly class="readonly-input">
                     </div>
-                    <button class="btn-secondary btn-block" id="proposePartnershipBtn">
-                        Propose Partnership
-                    </button>
+                    <div class="form-group">
+                        <label>Equity Rights</label>
+                        <textarea readonly class="readonly-input" rows="2">Non-forfeitable, no repurchase, no clawback, no drag-along without consent</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Additional Terms</h3>
+                    <div class="form-group">
+                        <label>Partnership Description</label>
+                        <textarea id="partnershipDescription" rows="4" placeholder="Describe the nature of the partnership, responsibilities, and mutual benefits..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <select id="partnershipDuration">
+                            <option value="indefinite">Indefinite (until termination)</option>
+                            <option value="1year">1 Year (renewable)</option>
+                            <option value="2years">2 Years (renewable)</option>
+                            <option value="5years">5 Years (renewable)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Termination Rights</label>
+                        <input type="text" value="Creator-only termination authority" readonly class="readonly-input">
+                        <p class="form-help">Bond returned to proposer if partnership is terminated</p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-outline" id="previewPartnershipBtn">Preview Agreement</button>
+                    <button class="btn-primary" id="submitPartnershipBtn">Submit Proposal</button>
                 </div>
             </div>
 
-            <!-- Settlement Option -->
-            <div class="option-card settlement">
-                <div class="option-header">
-                    <h3>📄 Settlement Agreement</h3>
-                    <div class="amount">50,000,000 MON</div>
-                </div>
-                <div class="option-body">
-                    <ul class="benefits-list">
-                        <li>✓ One-time settlement payment</li>
-                        <li>✓ Immediate resolution</li>
-                        <li>✓ Content removal upon acceptance</li>
-                        <li>✓ Funds released after 48h timelock</li>
-                        <li>✓ Final and binding agreement</li>
-                    </ul>
-                    <div class="terms-input">
-                        <label for="settlementTerms">IPFS Terms Hash:</label>
-                        <input
-                            type="text"
-                            id="settlementTerms"
-                            placeholder="QmXxxx... (IPFS hash of agreement document)"
-                            class="terms-hash-input"
-                        >
+            <!-- Settlement Form -->
+            <div class="agreement-form" id="settlementForm" style="display: none;">
+                <div class="form-section">
+                    <h3>Payment Terms</h3>
+                    <div class="form-group">
+                        <label>Settlement Amount (MON)</label>
+                        <input type="text" id="settlementAmount" readonly class="readonly-input">
+                        <p class="form-help">One-time final payment, released after 48h timelock</p>
                     </div>
-                    <button class="btn-secondary btn-block" id="proposeSettlementBtn">
-                        Propose Settlement
-                    </button>
+                </div>
+
+                <div class="form-section">
+                    <h3>Settlement Details</h3>
+                    <div class="form-group">
+                        <label>Reason for Settlement</label>
+                        <textarea id="settlementReason" rows="4" placeholder="Describe what this settlement resolves (e.g., content dispute, partnership disagreement, etc.)..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Obligations Upon Acceptance</label>
+                        <textarea id="settlementObligations" rows="4" placeholder="What actions will be taken upon acceptance (e.g., content removal, public statement, etc.)..."></textarea>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="settlementMutualRelease">
+                        <label for="settlementMutualRelease">Include mutual release of all claims</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="settlementConfidential">
+                        <label for="settlementConfidential">Confidentiality clause (terms remain private)</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-outline" id="previewSettlementBtn">Preview Agreement</button>
+                    <button class="btn-primary" id="submitSettlementBtn">Submit Proposal</button>
                 </div>
             </div>
         </section>
+
+        <!-- Agreement Preview Modal -->
+        <div class="modal" id="previewModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Agreement Preview</h2>
+                    <button class="modal-close" id="closePreviewBtn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="agreementPreview" class="agreement-preview"></div>
+                </div>
+                <div class="modal-footer">
+                    <p class="modal-info">This agreement will be hashed and stored on-chain. The full text will be available via IPFS.</p>
+                    <button class="btn-outline" id="cancelPreviewBtn">Edit Agreement</button>
+                    <button class="btn-primary" id="confirmProposalBtn">Confirm & Submit</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Current Agreement Status -->
         <section class="status-section" id="statusSection">

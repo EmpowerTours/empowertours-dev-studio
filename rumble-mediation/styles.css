@@ -549,3 +549,319 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Agreement Type Selector */
+.agreement-type-selector {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    justify-content: center;
+}
+
+.type-btn {
+    flex: 1;
+    max-width: 300px;
+    padding: 20px 32px;
+    background: var(--dark-secondary);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.type-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.type-btn.active {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* Agreement Form */
+.agreement-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-section {
+    background: var(--dark-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.form-section h3 {
+    font-size: 20px;
+    margin-bottom: 24px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--dark);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.readonly-input {
+    background: var(--dark-secondary) !important;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.form-help {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+    font-style: italic;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.form-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 32px;
+}
+
+.btn-outline {
+    padding: 14px 32px;
+    background: transparent;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: var(--dark);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    padding: 24px 32px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--primary);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--danger);
+}
+
+.modal-body {
+    padding: 32px;
+}
+
+.modal-footer {
+    padding: 24px 32px;
+    border-top: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.modal-info {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    flex: 1;
+}
+
+/* Agreement Preview */
+.agreement-preview {
+    background: var(--dark-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+    font-family: 'Georgia', serif;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+.agreement-preview h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 32px;
+    font-size: 28px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 16px;
+}
+
+.agreement-preview h3 {
+    color: var(--secondary);
+    margin-top: 32px;
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.agreement-preview p {
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+.agreement-preview ul {
+    margin-left: 32px;
+    margin-bottom: 16px;
+}
+
+.agreement-preview li {
+    margin-bottom: 8px;
+}
+
+.agreement-preview .signature-section {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 2px solid var(--border);
+}
+
+.agreement-preview .signature-line {
+    margin-top: 40px;
+    padding-top: 8px;
+    border-top: 1px solid var(--text-tertiary);
+    width: 300px;
+}
+
+@media (max-width: 768px) {
+    .agreement-type-selector {
+        flex-direction: column;
+    }
+    
+    .type-btn {
+        max-width: 100%;
+    }
+    
+    .form-section {
+        padding: 20px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-outline,
+    .btn-primary {
+        width: 100%;
+    }
+    
+    .modal-content {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
