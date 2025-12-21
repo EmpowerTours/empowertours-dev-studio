@@ -24,7 +24,7 @@ const CONFIG = {
         }
     },
     // Testnet deployment
-    CONTRACT_ADDRESS: '0xDC323606208B6687523E228Ee8ce41728c15caDC',
+    CONTRACT_ADDRESS: '0x821ad43127ED630aAe974BA0Aa063235af8d00Dd',
     NETWORK_TYPE: 'testnet' // Change to 'mainnet' for production
 };
 

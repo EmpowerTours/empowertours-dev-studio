@@ -6,14 +6,14 @@ pragma solidity ^0.8.20;
  * @notice TESTNET VERSION - Ultra-secure mediation contract enforcing 5% fully diluted equity
  * @dev Partnership: 0.05 MON + 5% equity | Settlement: 0.025 MON (TESTNET AMOUNTS ONLY)
  * @custom:security-contact security@empowertours.com
- * @custom:beneficiary 0x5635e21B1EA43B65b3Bf96283B09D094478e2793
+ * @custom:beneficiary 0xe67e13D545C76C2b4e28DFE27Ad827E1FC18e8D9
  * @custom:testnet-warning THIS IS A TESTNET CONTRACT WITH LOW AMOUNTS FOR TESTING ONLY
  */
 contract RumbleMediationTestnet {
 
     // ============ Constants ============
 
-    address public constant CREATOR = 0x5635e21B1EA43B65b3Bf96283B09D094478e2793;
+    address public constant CREATOR = 0xe67e13D545C76C2b4e28DFE27Ad827E1FC18e8D9;
 
     // TESTNET AMOUNTS (For testing withdrawal flow)
     uint256 public constant PARTNERSHIP_BOND = 0.05 ether; // 0.05 MON (testnet)
