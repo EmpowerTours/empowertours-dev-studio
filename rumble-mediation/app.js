@@ -697,11 +697,24 @@ async function confirmProposal() {
         console.log('Current Account:', currentAccount);
         console.log('Contract Address:', CONFIG.CONTRACT_ADDRESS);
         console.log('Agreement Type:', currentAgreementData.type);
-        console.log('Network:', await provider.getNetwork());
+        const networkInfo = await provider.getNetwork();
+        console.log('Network:', networkInfo);
+        console.log('Chain ID:', networkInfo.chainId);
 
         // Check balance
         const balance = await provider.getBalance(currentAccount);
         console.log('Wallet Balance:', ethers.utils.formatEther(balance), 'MON');
+
+        // Check if there's already an active agreement
+        const agreementDetails = await contract.getAgreementDetails();
+        const [nonce, agreementType, status] = agreementDetails;
+        console.log('Current Agreement Status:', status); // 0=NONE, 1=PENDING, 2=ACTIVE, 3=TERMINATED
+
+        if (status === 1 || status === 2) {
+            const statusName = status === 1 ? 'PENDING' : 'ACTIVE';
+            showToast(`Cannot propose: Agreement already ${statusName}. Check Agreement Status below.`, 'error');
+            throw new Error(`Agreement already ${statusName}`);
+        }
 
         // Generate hash from the agreement text
         const termsHash = hashAgreement(currentAgreementData.plainText);
