@@ -679,7 +679,6 @@ async function confirmProposal() {
     if (!currentAccount || !signer) {
         showToast('Please connect your wallet first!', 'error');
         closePreview();
-        // Scroll to top to show connect button
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
     }
@@ -693,22 +692,67 @@ async function confirmProposal() {
         confirmProposalBtn.disabled = true;
         confirmProposalBtn.textContent = 'Submitting...';
 
+        // Debug logging
+        console.log('=== Proposal Submission Debug ===');
+        console.log('Current Account:', currentAccount);
+        console.log('Contract Address:', CONFIG.CONTRACT_ADDRESS);
+        console.log('Agreement Type:', currentAgreementData.type);
+        console.log('Network:', await provider.getNetwork());
+
+        // Check balance
+        const balance = await provider.getBalance(currentAccount);
+        console.log('Wallet Balance:', ethers.utils.formatEther(balance), 'MON');
+
         // Generate hash from the agreement text
         const termsHash = hashAgreement(currentAgreementData.plainText);
+        console.log('Terms Hash:', termsHash);
+
+        // Check required amount
+        if (currentAgreementData.type === 'partnership') {
+            const requiredAmount = ethers.utils.formatEther(currentAgreementData.bondAmount);
+            console.log('Required Amount:', requiredAmount, 'MON');
+
+            if (balance.lt(currentAgreementData.bondAmount)) {
+                showToast(`Insufficient balance. Need ${requiredAmount} MON + gas`, 'error');
+                throw new Error('Insufficient balance');
+            }
+        } else {
+            const requiredAmount = ethers.utils.formatEther(currentAgreementData.settlementAmount);
+            console.log('Required Amount:', requiredAmount, 'MON');
+
+            if (balance.lt(currentAgreementData.settlementAmount)) {
+                showToast(`Insufficient balance. Need ${requiredAmount} MON + gas`, 'error');
+                throw new Error('Insufficient balance');
+            }
+        }
 
         showToast('Please confirm transaction in MetaMask...', 'info');
 
         let tx;
-        if (currentAgreementData.type === 'partnership') {
-            // For partnership, we use the same hash for both terms and equity document
-            // In production, you might want separate hashes
-            tx = await contract.proposePartnership(termsHash, termsHash, {
-                value: currentAgreementData.bondAmount
-            });
-        } else {
-            tx = await contract.proposeSettlement(termsHash, {
-                value: currentAgreementData.settlementAmount
-            });
+        try {
+            if (currentAgreementData.type === 'partnership') {
+                console.log('Calling proposePartnership...');
+                tx = await contract.proposePartnership(termsHash, termsHash, {
+                    value: currentAgreementData.bondAmount,
+                    gasLimit: 500000 // Explicit gas limit
+                });
+            } else {
+                console.log('Calling proposeSettlement...');
+                tx = await contract.proposeSettlement(termsHash, {
+                    value: currentAgreementData.settlementAmount,
+                    gasLimit: 300000 // Explicit gas limit
+                });
+            }
+            console.log('Transaction sent:', tx.hash);
+        } catch (txError) {
+            console.error('Transaction Error Details:', txError);
+            if (txError.data) {
+                console.error('Error Data:', txError.data);
+            }
+            if (txError.error) {
+                console.error('Inner Error:', txError.error);
+            }
+            throw txError;
         }
 
         showToast('Transaction submitted! Waiting for confirmation...', 'success');
@@ -736,14 +780,36 @@ async function confirmProposal() {
         await loadAgreementStatus();
 
     } catch (error) {
-        console.error('Failed to submit proposal:', error);
+        console.error('=== Proposal Submission Error ===');
+        console.error('Error:', error);
+        console.error('Error Code:', error.code);
+        console.error('Error Message:', error.message);
+
         let errorMsg = 'Failed to submit proposal';
+
         if (error.code === 4001) {
             errorMsg = 'Transaction rejected by user';
+        } else if (error.code === -32603) {
+            errorMsg = 'RPC Error: Check you have enough MON for gas + transaction';
+        } else if (error.message && error.message.includes('insufficient funds')) {
+            errorMsg = 'Insufficient funds for transaction + gas';
+        } else if (error.message && error.message.includes('nonce')) {
+            errorMsg = 'Nonce error. Try refreshing the page and reconnecting wallet';
+        } else if (error.message && error.message.includes('gas')) {
+            errorMsg = 'Gas estimation failed. Check network and balance';
+        } else if (error.reason) {
+            errorMsg = `Contract error: ${error.reason}`;
         } else if (error.message) {
-            errorMsg = error.message.substring(0, 100);
+            errorMsg = error.message.substring(0, 150);
         }
+
         showToast(errorMsg, 'error');
+
+        // Show in modal footer too
+        const modalFooter = document.querySelector('.modal-footer .modal-info');
+        if (modalFooter) {
+            modalFooter.innerHTML = `<strong style="color: var(--danger);">Error: ${errorMsg}</strong>`;
+        }
     } finally {
         confirmProposalBtn.disabled = false;
         confirmProposalBtn.textContent = 'Confirm & Submit';
