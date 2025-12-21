@@ -150,6 +150,100 @@ body {
     margin-bottom: 0;
 }
 
+/* Faucet Section */
+.faucet-section {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.faucet-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.faucet-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.faucet-header h3 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.faucet-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.faucet-body {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+}
+
+.faucet-info {
+    margin-bottom: 24px;
+}
+
+.faucet-info .info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+.faucet-info .info-item:last-child {
+    border-bottom: none;
+}
+
+.faucet-info .label {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.faucet-info .value {
+    color: white;
+    font-weight: 700;
+}
+
+.faucet-actions {
+    text-align: center;
+}
+
+.faucet-actions .btn-primary {
+    width: 100%;
+    background: white;
+    color: #1e3a8a;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.faucet-actions .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.faucet-actions .btn-primary:disabled {
+    background: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.faucet-status {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    min-height: 20px;
+}
+
 /* Connection Section */
 .connection-section {
     text-align: center;

@@ -25,6 +25,7 @@ const CONFIG = {
     },
     // Testnet deployment
     CONTRACT_ADDRESS: '0x821ad43127ED630aAe974BA0Aa063235af8d00Dd',
+    FAUCET_ADDRESS: '0x11372F1ea7E75A69F50E9cD4300F2cB9dd2b48f4',
     NETWORK_TYPE: 'testnet' // Change to 'mainnet' for production
 };
 
@@ -55,11 +56,21 @@ const CONTRACT_ABI = [
     "event EquityGranted(uint256 indexed nonce, address indexed beneficiary, uint256 equityPercentage, bool nonForfeitable, string equityClass, string equityRights, uint256 timestamp)"
 ];
 
+const FAUCET_ABI = [
+    "function requestMON() external",
+    "function getFaucetBalance() external view returns (uint256)",
+    "function getTimeUntilNextDrip(address _address) external view returns (uint256)",
+    "function canRequestNow(address _address) external view returns (bool)",
+    "function dripAmount() external view returns (uint256)",
+    "function cooldownPeriod() external view returns (uint256)"
+];
+
 // ============ State ============
 
 let provider = null;
 let signer = null;
 let contract = null;
+let faucetContract = null;
 let currentAccount = null;
 let currentNetwork = CONFIG.NETWORK_TYPE === 'mainnet' ? CONFIG.MONAD_MAINNET : CONFIG.MONAD_TESTNET;
 
@@ -76,6 +87,11 @@ const contractAddressEl = document.getElementById('contractAddress');
 const creatorAddressEl = document.getElementById('creatorAddress');
 const agreementNonceEl = document.getElementById('agreementNonce');
 const contractBalanceEl = document.getElementById('contractBalance');
+
+// Faucet elements
+const faucetBalance = document.getElementById('faucetBalance');
+const requestMONBtn = document.getElementById('requestMONBtn');
+const faucetStatus = document.getElementById('faucetStatus');
 
 // Agreement type selector
 const partnershipTypeBtn = document.getElementById('partnershipTypeBtn');
@@ -139,6 +155,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusCard.innerHTML = '<div class="status-loading">Connect wallet to view agreement status</div>';
     }
 
+    // Initialize faucet (always available, no wallet needed for display)
+    await loadFaucetBalance();
+
     // Check if already connected
     const accounts = await window.ethereum.request({ method: 'eth_accounts' });
     if (accounts.length > 0) {
@@ -148,6 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Event listeners
     connectBtn.addEventListener('click', connectWallet);
     connectBtnHeader.addEventListener('click', connectWallet);
+    requestMONBtn.addEventListener('click', requestFaucetMON);
 
     // Agreement type switcher
     partnershipTypeBtn.addEventListener('click', () => switchAgreementType('partnership'));
@@ -203,6 +223,11 @@ async function connectWallet() {
             await loadContractData();
             await loadAgreementStatus();
         }
+
+        // Initialize faucet contract
+        faucetContract = new ethers.Contract(CONFIG.FAUCET_ADDRESS, FAUCET_ABI, signer);
+        await loadFaucetBalance();
+        await checkFaucetCooldown();
 
         // Update UI
         updateUIConnected();
@@ -999,6 +1024,104 @@ async function withdrawFunds() {
     } catch (error) {
         console.error('Withdrawal failed:', error);
         showToast('Withdrawal failed: ' + error.message, 'error');
+    }
+}
+
+// ============ Faucet Functions ============
+
+async function loadFaucetBalance() {
+    try {
+        // Create read-only provider for faucet balance
+        const readProvider = new ethers.providers.JsonRpcProvider(currentNetwork.rpcUrl);
+        const readFaucet = new ethers.Contract(CONFIG.FAUCET_ADDRESS, FAUCET_ABI, readProvider);
+
+        const balance = await readFaucet.getFaucetBalance();
+        if (faucetBalance) {
+            faucetBalance.textContent = `${ethers.utils.formatEther(balance)} MON`;
+        }
+    } catch (error) {
+        console.error('Failed to load faucet balance:', error);
+        if (faucetBalance) {
+            faucetBalance.textContent = 'Error loading';
+        }
+    }
+}
+
+async function checkFaucetCooldown() {
+    if (!faucetContract || !currentAccount) return;
+
+    try {
+        const canRequest = await faucetContract.canRequestNow(currentAccount);
+
+        if (canRequest) {
+            requestMONBtn.disabled = false;
+            requestMONBtn.textContent = 'Request 0.1 MON';
+            faucetStatus.textContent = '✅ Ready to request';
+        } else {
+            const timeRemaining = await faucetContract.getTimeUntilNextDrip(currentAccount);
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+
+            requestMONBtn.disabled = true;
+            requestMONBtn.textContent = `⏳ Cooldown: ${minutes}m ${seconds}s`;
+            faucetStatus.textContent = `Next request available in ${minutes}m ${seconds}s`;
+
+            // Auto-refresh when cooldown expires
+            setTimeout(() => checkFaucetCooldown(), timeRemaining * 1000 + 1000);
+        }
+    } catch (error) {
+        console.error('Failed to check cooldown:', error);
+        faucetStatus.textContent = '';
+    }
+}
+
+async function requestFaucetMON() {
+    if (!faucetContract) {
+        showToast('Please connect your wallet first!', 'error');
+        return;
+    }
+
+    try {
+        requestMONBtn.disabled = true;
+        requestMONBtn.textContent = 'Requesting...';
+        faucetStatus.textContent = 'Submitting transaction...';
+
+        const tx = await faucetContract.requestMON({
+            gasLimit: 100000
+        });
+
+        showToast('Faucet request submitted! Waiting for confirmation...', 'info');
+        faucetStatus.textContent = 'Waiting for confirmation...';
+
+        await tx.wait();
+
+        showToast('✅ 0.1 MON received successfully!', 'success');
+
+        // Reload faucet data
+        await loadFaucetBalance();
+        await checkFaucetCooldown();
+
+    } catch (error) {
+        console.error('Faucet request failed:', error);
+
+        let errorMsg = 'Failed to request MON';
+
+        if (error.message && error.message.includes('Cooldown period not expired')) {
+            errorMsg = 'Cooldown period not expired yet. Please wait.';
+        } else if (error.message && error.message.includes('Faucet is empty')) {
+            errorMsg = 'Faucet is empty. Please notify the developer.';
+        } else if (error.code === 4001) {
+            errorMsg = 'Transaction rejected by user';
+        } else if (error.message) {
+            errorMsg = error.message.substring(0, 150);
+        }
+
+        showToast(errorMsg, 'error');
+        faucetStatus.textContent = errorMsg;
+
+        // Re-enable button
+        requestMONBtn.disabled = false;
+        requestMONBtn.textContent = 'Request 0.1 MON';
     }
 }
 

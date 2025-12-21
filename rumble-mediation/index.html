@@ -38,6 +38,36 @@
             </div>
         </section>
 
+        <!-- Testnet Faucet -->
+        <section class="faucet-section">
+            <div class="faucet-card">
+                <div class="faucet-header">
+                    <h3>💧 Testnet MON Faucet</h3>
+                    <p>Get free testnet MON to test the dApp</p>
+                </div>
+                <div class="faucet-body">
+                    <div class="faucet-info">
+                        <div class="info-item">
+                            <span class="label">Faucet Balance:</span>
+                            <span class="value" id="faucetBalance">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Drip Amount:</span>
+                            <span class="value">0.1 MON</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Cooldown:</span>
+                            <span class="value">1 hour</span>
+                        </div>
+                    </div>
+                    <div class="faucet-actions">
+                        <button class="btn-primary" id="requestMONBtn">Request 0.1 MON</button>
+                        <p class="faucet-status" id="faucetStatus"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Connection Section -->
         <section class="connection-section" id="connectionSection">
             <button class="btn-primary btn-large" id="connectBtn">
