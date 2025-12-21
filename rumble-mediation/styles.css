@@ -865,3 +865,36 @@ body {
         align-items: stretch;
     }
 }
+
+/* Header Connect Button */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-connect-header {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-connect-header:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-connect-header:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-connect-header.connected {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}

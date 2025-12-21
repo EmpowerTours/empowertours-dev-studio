@@ -66,6 +66,7 @@ let currentNetwork = CONFIG.NETWORK_TYPE === 'mainnet' ? CONFIG.MONAD_MAINNET : 
 // ============ DOM Elements ============
 
 const connectBtn = document.getElementById('connectBtn');
+const connectBtnHeader = document.getElementById('connectBtnHeader');
 const optionsSection = document.getElementById('optionsSection');
 const walletAddress = document.getElementById('walletAddress');
 const networkIndicator = document.getElementById('networkIndicator');
@@ -146,6 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Event listeners
     connectBtn.addEventListener('click', connectWallet);
+    connectBtnHeader.addEventListener('click', connectWallet);
 
     // Agreement type switcher
     partnershipTypeBtn.addEventListener('click', () => switchAgreementType('partnership'));
@@ -250,6 +252,9 @@ function updateUIConnected() {
     networkIndicator.querySelector('.status-dot').classList.add('connected');
     connectBtn.textContent = 'Connected ✓';
     connectBtn.disabled = true;
+    connectBtnHeader.textContent = formatAddress(currentAccount);
+    connectBtnHeader.classList.add('connected');
+    connectBtnHeader.disabled = true;
 
     if (CONFIG.CONTRACT_ADDRESS !== 'DEPLOY_CONTRACT_FIRST') {
         optionsSection.style.display = 'block';
@@ -670,6 +675,15 @@ function closePreview() {
 // ============ Submit Proposal ============
 
 async function confirmProposal() {
+    // Check wallet connection first
+    if (!currentAccount || !signer) {
+        showToast('Please connect your wallet first!', 'error');
+        closePreview();
+        // Scroll to top to show connect button
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+    }
+
     if (!currentAgreementData || !contract) {
         showToast('No agreement data available', 'error');
         return;
