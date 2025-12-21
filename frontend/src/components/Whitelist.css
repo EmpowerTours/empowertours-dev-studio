@@ -1,55 +1,28 @@
+/* ============================================
+   Whitelist Component Styles
+   ============================================ */
+
 .whitelist {
-  padding: 40px 0;
-}
-
-.connect-prompt {
-  text-align: center;
-  padding: 80px 0;
-}
-
-.connect-prompt h3 {
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-
-.connect-prompt p {
-  color: #888;
+  padding: 2.5rem 0;
 }
 
 .whitelist-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 3rem;
 }
 
 .whitelist-header h1 {
-  font-size: 36px;
-  margin-bottom: 12px;
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
 }
 
 .whitelist-header p {
-  color: #888;
-  font-size: 18px;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
 }
 
-.loading-state {
-  text-align: center;
-  padding: 80px 0;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #333;
-  border-top-color: #667eea;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 16px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
+/* Whitelist Success State */
 .whitelist-success {
   text-align: center;
   max-width: 800px;
@@ -57,36 +30,39 @@
 }
 
 .success-icon {
-  font-size: 64px;
-  margin-bottom: 24px;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
 }
 
 .whitelist-success h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
 }
 
 .whitelist-success > p {
-  color: #888;
-  margin-bottom: 32px;
-  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
 }
 
 .nft-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
-  padding: 40px;
-  margin-bottom: 48px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: var(--radius-md);
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-lg);
+  color: white;
 }
 
 .nft-badge {
-  font-size: 64px;
-  margin-bottom: 16px;
+  font-size: 4rem;
+  margin-bottom: 1rem;
 }
 
 .nft-card h3 {
-  font-size: 24px;
-  margin-bottom: 8px;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .nft-card p {
@@ -96,208 +72,217 @@
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .benefit-item {
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 32px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: 2rem;
   text-align: center;
+  transition: var(--transition);
+}
+
+.benefit-item:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
 }
 
 .benefit-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
 .benefit-item h4 {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #667eea;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-primary);
 }
 
 .benefit-item p {
-  color: #888;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
   line-height: 1.6;
 }
 
+/* Whitelist Available State */
 .whitelist-available {
   max-width: 700px;
   margin: 0 auto;
 }
 
 .progress-section {
-  background: #111;
-  border-radius: 12px;
-  padding: 32px;
-  margin-bottom: 32px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-primary);
 }
 
 .progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .progress-header h3 {
-  font-size: 20px;
+  font-size: 1.25rem;
+  color: var(--text-primary);
 }
 
 .spots-count {
-  color: #667eea;
+  color: var(--accent-primary);
   font-weight: 700;
 }
 
 .progress-bar {
-  background: #1a1a1a;
+  background: var(--bg-tertiary);
   height: 12px;
   border-radius: 6px;
   overflow: hidden;
 }
 
 .progress-fill {
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
   height: 100%;
   transition: width 0.3s;
 }
 
 .benefits-preview {
-  background: #111;
-  border-radius: 12px;
-  padding: 32px;
-  margin-bottom: 24px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-primary);
 }
 
 .benefits-preview h3 {
-  font-size: 20px;
-  margin-bottom: 24px;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
 }
 
 .benefits-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .benefit-card {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   align-items: flex-start;
-  padding: 16px;
-  background: #0a0a0a;
-  border-radius: 8px;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-primary);
+  transition: var(--transition);
+}
+
+.benefit-card:hover {
+  border-color: var(--accent-primary);
 }
 
 .benefit-emoji {
-  font-size: 32px;
+  font-size: 2rem;
 }
 
 .benefit-card h4 {
-  font-size: 16px;
-  margin-bottom: 4px;
-  color: #667eea;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--accent-primary);
 }
 
 .benefit-card p {
-  color: #888;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
   line-height: 1.5;
-}
-
-.error-message {
-  background: rgba(255, 107, 53, 0.1);
-  border: 1px solid #ff6b35;
-  color: #ff6b35;
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-.success-message {
-  background: rgba(46, 204, 113, 0.1);
-  border: 1px solid #2ecc71;
-  color: #2ecc71;
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-.success-message a {
-  color: #2ecc71;
-  text-decoration: underline;
 }
 
 .mint-button {
   width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1.125rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .mint-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .mint-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .mint-note {
   text-align: center;
-  margin-top: 16px;
-  color: #ff6b35;
+  margin-top: 1rem;
+  color: var(--error);
   font-weight: 600;
 }
 
+/* Whitelist Full State */
 .whitelist-full {
   text-align: center;
   max-width: 600px;
   margin: 0 auto;
-  padding: 60px 0;
+  padding: 3.75rem 0;
 }
 
 .full-icon {
-  font-size: 64px;
-  margin-bottom: 24px;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
 }
 
 .whitelist-full h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
 }
 
 .whitelist-full p {
-  color: #888;
-  margin-bottom: 16px;
-  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-size: 1rem;
 }
 
 .full-note {
   font-weight: 600;
-  color: #667eea;
+  color: var(--accent-primary);
 }
 
 .continue-button {
-  margin-top: 32px;
-  padding: 16px 48px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin-top: 2rem;
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   cursor: pointer;
+  transition: var(--transition);
+}
+
+.continue-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,8 +1,12 @@
+/* ============================================
+   Navbar Component Styles
+   ============================================ */
+
 .navbar {
   background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-primary);
   padding: 0;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: var(--transition);
 }
 
 .navbar-container {
@@ -11,36 +15,40 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 1rem 1.25rem;
 }
 
 .navbar-logo {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: color 0.3s ease;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.navbar-logo:hover {
+  color: var(--accent-primary);
 }
 
 .navbar-left-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   margin-left: auto;
-  margin-right: 24px;
+  margin-right: 1.5rem;
 }
 
 .theme-toggle {
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 18px;
+  border: 1px solid var(--border-primary);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.125rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,52 +57,53 @@
 .theme-toggle:hover {
   border-color: var(--accent-primary);
   transform: scale(1.05);
+  background: var(--bg-elevated);
 }
 
 .navbar-menu {
   display: flex;
-  gap: 24px;
+  gap: 1.5rem;
   align-items: center;
 }
 
 .navbar-item {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: var(--transition);
 }
 
 .navbar-item:hover {
-  color: var(--text-primary);
+  color: var(--accent-primary);
 }
 
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .network-switch {
   display: flex;
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 4px;
-  gap: 4px;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem;
+  gap: 0.25rem;
+  transition: var(--transition);
 }
 
 .network-option {
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   background: transparent;
   border: none;
   color: var(--text-tertiary);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: 6px;
-  transition: all 0.2s;
+  transition: var(--transition);
 }
 
 .network-option:hover:not(.active) {
@@ -105,94 +114,144 @@
 .network-option.active {
   background: var(--accent-primary);
   color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .navbar-info {
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
   align-items: center;
 }
 
 .whitelist-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8125rem;
   font-weight: 600;
+  color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .credits-badge {
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
+  border: 1px solid var(--border-primary);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-primary);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  transition: var(--transition);
+}
+
+.credits-badge:hover {
+  border-color: var(--accent-primary);
 }
 
 .connect-button,
 .network-button,
 .address-button {
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-sm);
   border: none;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
 }
 
 .connect-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .connect-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-md);
 }
 
 .connect-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+}
+
+.network-button {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
 }
 
 .network-button.wrong-network {
-  background: #ff6b35;
+  background: var(--error);
   color: white;
+  border-color: var(--error);
+}
+
+.network-button:hover:not(.wrong-network) {
+  border-color: var(--accent-primary);
 }
 
 .address-button {
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  transition: var(--transition);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.address-button:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-elevated);
 }
 
 .wallet-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .network-indicator {
   background: var(--bg-tertiary);
-  border: 1px solid var(--success-color);
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  color: var(--success-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  border: 1px solid var(--success);
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  color: var(--success);
+  font-weight: 600;
+  transition: var(--transition);
 }
 
 .network-indicator.testnet {
-  border-color: #3498db;
-  color: #3498db;
+  border-color: var(--info);
+  color: var(--info);
 }
 
 .network-indicator.mainnet {
-  border-color: var(--success-color);
-  color: var(--success-color);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .navbar-menu {
+    display: none; /* Hide menu on mobile, could add hamburger later */
+  }
+
+  .navbar-left-controls {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .navbar-info {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
 }

@@ -1,36 +1,44 @@
+/* ============================================
+   App Component Styles
+   ============================================ */
+
 .App {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 .footer {
   text-align: center;
-  padding: 40px 20px;
-  margin-top: 80px;
-  border-top: 1px solid #333;
-  color: #888;
+  padding: 2.5rem 1.25rem;
+  margin-top: 5rem;
+  border-top: 1px solid var(--border-primary);
+  color: var(--text-secondary);
 }
 
 .footer p {
-  margin: 10px 0;
+  margin: 0.625rem 0;
+  color: var(--text-secondary);
 }
 
 .footer-links {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .footer-links a {
-  color: #4a9eff;
+  color: var(--accent-primary);
   text-decoration: none;
-  margin: 0 8px;
+  margin: 0 0.5rem;
+  transition: var(--transition);
 }
 
 .footer-links a:hover {
   text-decoration: underline;
+  color: var(--accent-primary-hover);
 }
