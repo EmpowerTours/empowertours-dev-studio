@@ -159,7 +159,7 @@ const Portfolio = () => {
           </p>
           <div className="footer-actions">
             <a
-              href="https://empowertours.com"
+              href="https://empowertours.xyz"
               className="btn btn-outline"
               target="_blank"
               rel="noopener noreferrer"

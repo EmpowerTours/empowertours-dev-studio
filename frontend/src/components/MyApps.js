@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useWallet } from '../context/WalletContext';
-import { useApi } from '../context/ApiContext';
 import { useNavigate } from 'react-router-dom';
 import './MyApps.css';
 
 export default function MyApps() {
-  const { address, isConnected } = useWallet();
-  const { apiUrl } = useApi();
+  const { address, isConnected, API_URL } = useWallet();
   const navigate = useNavigate();
   const [apps, setApps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,18 +20,46 @@ export default function MyApps() {
   async function loadUserApps() {
     try {
       setLoading(true);
-      const response = await fetch(`${apiUrl}/api/apps/user/${address}`, {
+
+      // Check if API_URL is available (backend API might not be deployed)
+      if (!API_URL || API_URL.includes('localhost')) {
+        console.warn('API not available - using local storage');
+        // Load from local storage as fallback
+        const savedApps = localStorage.getItem(`apps_${address}`);
+        if (savedApps) {
+          setApps(JSON.parse(savedApps));
+        } else {
+          setApps([]);
+        }
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/api/apps/user/${address}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt')}`
         }
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setApps(data.apps || []);
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          setApps(data.apps || []);
+        } else {
+          // Not JSON response, use local storage fallback
+          const savedApps = localStorage.getItem(`apps_${address}`);
+          setApps(savedApps ? JSON.parse(savedApps) : []);
+        }
+      } else {
+        // API error, use local storage fallback
+        const savedApps = localStorage.getItem(`apps_${address}`);
+        setApps(savedApps ? JSON.parse(savedApps) : []);
       }
     } catch (error) {
-      console.error('Failed to load apps:', error);
+      // Network error or other issue, use local storage fallback
+      console.warn('API unavailable, using local storage:', error.message);
+      const savedApps = localStorage.getItem(`apps_${address}`);
+      setApps(savedApps ? JSON.parse(savedApps) : []);
     } finally {
       setLoading(false);
     }

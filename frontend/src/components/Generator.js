@@ -52,8 +52,20 @@ const Generator = () => {
       return;
     }
 
-    if (credits < 1) {
-      setError('Insufficient credits. Please purchase credits to continue.');
+    // Check if backend/contract is available
+    const hasBackend = window.location.hostname !== 'localhost' &&
+                      !window.location.hostname.includes('127.0.0.1');
+
+    if (credits < 1 && hasBackend) {
+      setError('Insufficient credits. Backend API required for full generation. Try Preview mode instead (free).');
+      return;
+    }
+
+    // If no backend, show info message but allow preview-like behavior
+    if (!hasBackend || credits < 1) {
+      setError('ℹ️ Backend API not available. Using Preview mode instead. Full generation requires deployed backend with credit system.');
+      // Fall back to preview mode
+      await handlePreview();
       return;
     }
 
@@ -72,7 +84,7 @@ const Generator = () => {
 
       console.log('✅ Generation complete:', generated);
     } catch (err) {
-      setError(err.error || 'Generation failed');
+      setError(err.error || 'Generation failed. Backend API may not be available.');
       console.error('Generation error:', err);
     } finally {
       setLoading(false);
@@ -178,9 +190,10 @@ const Generator = () => {
             <button
               className="generate-button"
               onClick={handleGenerate}
-              disabled={loading || !prompt || credits < 1}
+              disabled={loading || !prompt}
+              title={credits < 1 ? 'Backend not available - will use Preview mode' : 'Generate full dApp with tests and deployment'}
             >
-              {loading ? '⏳ Generating Full App...' : `🚀 Generate (1 Credit)`}
+              {loading ? '⏳ Generating...' : credits < 1 ? '🚀 Generate (Demo Mode)' : `🚀 Generate (1 Credit)`}
             </button>
           </div>
 
