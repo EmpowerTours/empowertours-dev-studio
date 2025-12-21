@@ -896,7 +896,7 @@ async function acceptAgreement() {
         showToast('Accepting agreement...', 'info');
 
         const tx = await contract.acceptAgreement({
-            gasLimit: 300000
+            gasLimit: 500000  // Increased from 300k - equity grant needs more gas
         });
 
         showToast('Transaction submitted! Waiting for confirmation...', 'success');
