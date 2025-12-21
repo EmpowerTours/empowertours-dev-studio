@@ -224,53 +224,6 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-
-              <div className="portfolio-section">
-                <h3>Featured Projects</h3>
-                <div className="portfolio-grid">
-                  <div className="portfolio-card">
-                    <div className="portfolio-header">
-                      <div className="portfolio-status-badge live">Live Demo</div>
-                      <h4>Blockchain Settlement Framework</h4>
-                      <p className="portfolio-description">
-                        Voluntary bilateral negotiation tool on Monad blockchain.
-                        Demonstrates smart contract development, escrow mechanics, and
-                        secure pull-pattern withdrawals.
-                      </p>
-                    </div>
-                    <div className="portfolio-tech">
-                      <span className="tech-tag">Solidity</span>
-                      <span className="tech-tag">Monad</span>
-                      <span className="tech-tag">ethers.js</span>
-                      <span className="tech-tag">React</span>
-                    </div>
-                    <div className="portfolio-features">
-                      <div className="portfolio-feature">
-                        <span className="check-icon">✓</span>
-                        Escrow & Mutual Consent
-                      </div>
-                      <div className="portfolio-feature">
-                        <span className="check-icon">✓</span>
-                        Pull-Pattern Security
-                      </div>
-                      <div className="portfolio-feature">
-                        <span className="check-icon">✓</span>
-                        On-Chain Dispute Resolution
-                      </div>
-                    </div>
-                    <div className="portfolio-actions">
-                      <a
-                        href="/settlement-framework"
-                        className="portfolio-btn primary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Live Demo
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </>
           )}
         </>
