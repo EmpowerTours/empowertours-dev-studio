@@ -363,6 +363,33 @@ async function loadAgreementStatus() {
             </div>
         `;
 
+        // Check if user can accept pending agreement
+        const creator = await contract.CREATOR();
+        if (status === 1 && currentAccount.toLowerCase() === creator.toLowerCase()) {
+            const now = Math.floor(Date.now() / 1000);
+            const unlockTime = proposalTime + (5 * 60); // 5 minutes timelock
+            const timeRemaining = unlockTime - now;
+
+            const acceptBtn = document.createElement('button');
+            acceptBtn.className = 'btn-primary btn-block';
+            acceptBtn.style.marginTop = '20px';
+
+            if (timeRemaining > 0) {
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                acceptBtn.textContent = `⏳ Accept Available in ${minutes}m ${seconds}s`;
+                acceptBtn.disabled = true;
+
+                // Auto-refresh when timelock expires
+                setTimeout(() => loadAgreementStatus(), timeRemaining * 1000 + 1000);
+            } else {
+                acceptBtn.textContent = '✅ Accept Agreement';
+                acceptBtn.onclick = acceptAgreement;
+            }
+
+            statusCard.appendChild(acceptBtn);
+        }
+
         // Check for pending withdrawals
         const pendingWithdrawal = await contract.getPendingWithdrawal(currentAccount);
         if (pendingWithdrawal.gt(0)) {
@@ -850,6 +877,41 @@ async function confirmProposal() {
     } finally {
         confirmProposalBtn.disabled = false;
         confirmProposalBtn.textContent = 'Confirm & Submit';
+    }
+}
+
+// ============ Accept Agreement ============
+
+async function acceptAgreement() {
+    try {
+        showToast('Accepting agreement...', 'info');
+
+        const tx = await contract.acceptAgreement({
+            gasLimit: 300000
+        });
+
+        showToast('Transaction submitted! Waiting for confirmation...', 'success');
+        await tx.wait();
+
+        showToast('✅ Agreement accepted successfully! Equity granted.', 'success');
+
+        // Reload data
+        await loadContractData();
+        await loadAgreementStatus();
+
+    } catch (error) {
+        console.error('Accept failed:', error);
+
+        let errorMsg = 'Failed to accept agreement';
+        if (error.message && error.message.includes('TimelockNotExpired')) {
+            errorMsg = 'Timelock not expired yet. Please wait.';
+        } else if (error.code === 4001) {
+            errorMsg = 'Transaction rejected by user';
+        } else if (error.message) {
+            errorMsg = error.message.substring(0, 150);
+        }
+
+        showToast(errorMsg, 'error');
     }
 }
 
