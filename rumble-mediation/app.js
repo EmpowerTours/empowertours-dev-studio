@@ -703,7 +703,31 @@ async function confirmProposal() {
 
         // Check balance
         const balance = await provider.getBalance(currentAccount);
-        console.log('Wallet Balance:', ethers.utils.formatEther(balance), 'MON');
+        const balanceFormatted = ethers.utils.formatEther(balance);
+        console.log('Wallet Balance:', balanceFormatted, 'MON');
+
+        // Check if balance is zero
+        if (balance.eq(0)) {
+            console.error('ZERO BALANCE - Need testnet MON');
+            showToast('❌ Zero balance! You need testnet MON. Get some from Monad Testnet Faucet first.', 'error');
+
+            const modalFooter = document.querySelector('.modal-footer .modal-info');
+            if (modalFooter) {
+                modalFooter.innerHTML = `<strong style="color: var(--danger);">You need testnet MON! Visit <a href="https://testnet-faucet.monad.xyz/" target="_blank" style="color: var(--accent-primary);">Monad Testnet Faucet</a> to get free testnet tokens.</strong>`;
+            }
+            throw new Error('Zero balance - need testnet MON');
+        }
+
+        // Check if there's already an active agreement
+        const agreementDetails = await contract.getAgreementDetails();
+        const [nonce, agreementType, status] = agreementDetails;
+        console.log('Current Agreement Status:', status); // 0=NONE, 1=PENDING, 2=ACTIVE, 3=TERMINATED
+
+        if (status === 1 || status === 2) {
+            const statusName = status === 1 ? 'PENDING' : 'ACTIVE';
+            showToast(`Cannot propose: Agreement already ${statusName}. Check Agreement Status below.`, 'error');
+            throw new Error(`Agreement already ${statusName}`);
+        }
 
         // Check if there's already an active agreement
         const agreementDetails = await contract.getAgreementDetails();
@@ -720,23 +744,34 @@ async function confirmProposal() {
         const termsHash = hashAgreement(currentAgreementData.plainText);
         console.log('Terms Hash:', termsHash);
 
-        // Check required amount
-        if (currentAgreementData.type === 'partnership') {
-            const requiredAmount = ethers.utils.formatEther(currentAgreementData.bondAmount);
-            console.log('Required Amount:', requiredAmount, 'MON');
+        // Check required amount + estimate gas
+        const requiredValue = currentAgreementData.type === 'partnership'
+            ? currentAgreementData.bondAmount
+            : currentAgreementData.settlementAmount;
 
-            if (balance.lt(currentAgreementData.bondAmount)) {
-                showToast(`Insufficient balance. Need ${requiredAmount} MON + gas`, 'error');
-                throw new Error('Insufficient balance');
-            }
-        } else {
-            const requiredAmount = ethers.utils.formatEther(currentAgreementData.settlementAmount);
-            console.log('Required Amount:', requiredAmount, 'MON');
+        const requiredFormatted = ethers.utils.formatEther(requiredValue);
+        console.log('Required Value:', requiredFormatted, 'MON');
 
-            if (balance.lt(currentAgreementData.settlementAmount)) {
-                showToast(`Insufficient balance. Need ${requiredAmount} MON + gas`, 'error');
-                throw new Error('Insufficient balance');
+        // Estimate gas needed (approximate)
+        const estimatedGas = ethers.BigNumber.from(currentAgreementData.type === 'partnership' ? '500000' : '300000');
+        const gasPrice = await provider.getGasPrice();
+        const estimatedGasCost = estimatedGas.mul(gasPrice);
+        const estimatedGasCostFormatted = ethers.utils.formatEther(estimatedGasCost);
+        console.log('Estimated Gas Cost:', estimatedGasCostFormatted, 'MON');
+
+        const totalNeeded = requiredValue.add(estimatedGasCost);
+        const totalNeededFormatted = ethers.utils.formatEther(totalNeeded);
+        console.log('Total Needed (value + gas):', totalNeededFormatted, 'MON');
+
+        if (balance.lt(totalNeeded)) {
+            const shortfall = ethers.utils.formatEther(totalNeeded.sub(balance));
+            showToast(`Insufficient balance. Need ${totalNeededFormatted} MON total (${requiredFormatted} + gas), you have ${balanceFormatted} MON. Short by ${shortfall} MON`, 'error');
+
+            const modalFooter = document.querySelector('.modal-footer .modal-info');
+            if (modalFooter) {
+                modalFooter.innerHTML = `<strong style="color: var(--danger);">Insufficient funds! Get more testnet MON from <a href="https://testnet-faucet.monad.xyz/" target="_blank" style="color: var(--accent-primary);">Monad Testnet Faucet</a></strong>`;
             }
+            throw new Error('Insufficient balance');
         }
 
         showToast('Please confirm transaction in MetaMask...', 'info');
