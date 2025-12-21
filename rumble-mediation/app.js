@@ -247,16 +247,24 @@ async function switchNetwork() {
 }
 
 function updateUIConnected() {
-    walletAddress.textContent = `Connected: ${formatAddress(currentAccount)}`;
-    networkName.textContent = currentNetwork.chainName;
-    networkIndicator.querySelector('.status-dot').classList.add('connected');
-    connectBtn.textContent = 'Connected ✓';
-    connectBtn.disabled = true;
-    connectBtnHeader.textContent = formatAddress(currentAccount);
-    connectBtnHeader.classList.add('connected');
-    connectBtnHeader.disabled = true;
+    if (walletAddress) walletAddress.textContent = `Connected: ${formatAddress(currentAccount)}`;
+    if (networkName) networkName.textContent = currentNetwork.chainName;
 
-    if (CONFIG.CONTRACT_ADDRESS !== 'DEPLOY_CONTRACT_FIRST') {
+    const statusDot = networkIndicator?.querySelector('.status-dot');
+    if (statusDot) statusDot.classList.add('connected');
+
+    if (connectBtn) {
+        connectBtn.textContent = 'Connected ✓';
+        connectBtn.disabled = true;
+    }
+
+    if (connectBtnHeader) {
+        connectBtnHeader.textContent = formatAddress(currentAccount);
+        connectBtnHeader.classList.add('connected');
+        connectBtnHeader.disabled = true;
+    }
+
+    if (CONFIG.CONTRACT_ADDRESS !== 'DEPLOY_CONTRACT_FIRST' && optionsSection) {
         optionsSection.style.display = 'block';
     }
 }
@@ -367,7 +375,8 @@ async function loadAgreementStatus() {
         const creator = await contract.CREATOR();
         if (status === 1 && currentAccount.toLowerCase() === creator.toLowerCase()) {
             const now = Math.floor(Date.now() / 1000);
-            const unlockTime = proposalTime + (5 * 60); // 5 minutes timelock
+            const proposalTimeSeconds = proposalTime.toNumber(); // Convert BigNumber to number
+            const unlockTime = proposalTimeSeconds + (5 * 60); // 5 minutes timelock
             const timeRemaining = unlockTime - now;
 
             const acceptBtn = document.createElement('button');
