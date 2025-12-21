@@ -399,6 +399,22 @@ async function loadAgreementStatus() {
             statusCard.appendChild(acceptBtn);
         }
 
+        // Show terminate button if creator and agreement is active
+        if (status === 2 && currentAccount.toLowerCase() === creator.toLowerCase()) {
+            const terminateBtn = document.createElement('button');
+            terminateBtn.className = 'btn-outline btn-block';
+            terminateBtn.style.marginTop = '20px';
+            terminateBtn.style.borderColor = 'var(--warning)';
+            terminateBtn.style.color = 'var(--warning)';
+            terminateBtn.textContent = '⚠️ Terminate Agreement';
+            terminateBtn.onclick = () => {
+                if (confirm('Are you sure you want to terminate this agreement? The bond will be returned to the proposer.')) {
+                    terminateAgreement();
+                }
+            };
+            statusCard.appendChild(terminateBtn);
+        }
+
         // Check for pending withdrawals
         const pendingWithdrawal = await contract.getPendingWithdrawal(currentAccount);
         if (pendingWithdrawal.gt(0)) {
@@ -916,6 +932,48 @@ async function acceptAgreement() {
             errorMsg = 'Timelock not expired yet. Please wait.';
         } else if (error.code === 4001) {
             errorMsg = 'Transaction rejected by user';
+        } else if (error.message) {
+            errorMsg = error.message.substring(0, 150);
+        }
+
+        showToast(errorMsg, 'error');
+    }
+}
+
+// ============ Terminate Agreement ============
+
+async function terminateAgreement() {
+    const reason = prompt('Enter termination reason (required):');
+
+    if (!reason || !reason.trim()) {
+        showToast('Termination cancelled - reason required', 'info');
+        return;
+    }
+
+    try {
+        showToast('Terminating agreement...', 'info');
+
+        const tx = await contract.terminateAgreement(reason.trim(), {
+            gasLimit: 400000
+        });
+
+        showToast('Transaction submitted! Waiting for confirmation...', 'success');
+        await tx.wait();
+
+        showToast('✅ Agreement terminated. Bond returned to proposer.', 'success');
+
+        // Reload data
+        await loadContractData();
+        await loadAgreementStatus();
+
+    } catch (error) {
+        console.error('Terminate failed:', error);
+
+        let errorMsg = 'Failed to terminate agreement';
+        if (error.code === 4001) {
+            errorMsg = 'Transaction rejected by user';
+        } else if (error.message && error.message.includes('InvalidAgreementStatus')) {
+            errorMsg = 'Agreement is not active';
         } else if (error.message) {
             errorMsg = error.message.substring(0, 150);
         }
