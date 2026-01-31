@@ -2,14 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '../context/WalletContext';
 import { useContract } from '../context/ContractContext';
-import { useNetwork } from '../context/NetworkContext';
 import { useTheme } from '../context/ThemeContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const { account, isConnected, isCorrectNetwork, connectWallet, disconnectWallet, switchToNetwork, loading } = useWallet();
   const { credits, isWhitelisted } = useContract();
-  const { currentNetwork } = useNetwork();
   const { theme, toggleTheme } = useTheme();
 
   const formatAddress = (address) => {
