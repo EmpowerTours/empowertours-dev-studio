@@ -89,8 +89,12 @@ export const WalletProvider = ({ children }) => {
         await switchToNetwork();
       }
 
-      // Authenticate with backend
-      await authenticateUser(address, signer);
+      // Authenticate with backend (non-blocking — wallet connects even if auth fails)
+      try {
+        await authenticateUser(address, signer);
+      } catch (authErr) {
+        console.warn('Backend auth skipped:', authErr.message);
+      }
 
     } catch (error) {
       console.error('Failed to connect wallet:', error);
@@ -139,6 +143,10 @@ export const WalletProvider = ({ children }) => {
       // Get nonce from backend
       const nonceRes = await axios.get(`${API_URL}/api/auth/nonce/${address}`);
       const { message } = nonceRes.data;
+
+      if (!message) {
+        throw new Error('Backend returned no sign message — check REACT_APP_API_URL');
+      }
 
       // Sign message
       const signature = await signer.signMessage(message);
