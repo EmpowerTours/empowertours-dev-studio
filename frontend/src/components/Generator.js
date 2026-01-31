@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useApi } from '../context/ApiContext';
 import { useContract } from '../context/ContractContext';
 import CodePreview from './CodePreview';
@@ -17,6 +18,7 @@ const APP_TYPES = [
 const Generator = () => {
   const { generateDApp, previewGeneration } = useApi();
   const { credits, loadUserData } = useContract();
+  const location = useLocation();
 
   const [prompt, setPrompt] = useState('');
   const [appType, setAppType] = useState('NFT Platform');
@@ -25,6 +27,21 @@ const Generator = () => {
   const [error, setError] = useState(null);
   const [previewData, setPreviewData] = useState(null);
   const [activeTab, setActiveTab] = useState('prompt'); // prompt, code, testnet
+  const [daoContext, setDaoContext] = useState(null); // DAO contract context if building on a deployed contract
+
+  // Pre-fill from DAO Contracts navigation
+  useEffect(() => {
+    if (location.state?.prefillPrompt) {
+      setPrompt(location.state.prefillPrompt);
+      setAppType(location.state.prefillAppType || 'Custom');
+      if (location.state.daoContractAddress) {
+        setDaoContext({
+          address: location.state.daoContractAddress,
+          proposalId: location.state.daoProposalId,
+        });
+      }
+    }
+  }, [location.state]);
 
   const handlePreview = async () => {
     if (!prompt || prompt.trim().length < 10) {
@@ -107,7 +124,7 @@ const Generator = () => {
     <div className="generator">
       <div className="generator-header">
         <h1>🤖 Generate Your dApp</h1>
-        <p>Describe your idea in natural language and let Grok AI build it for you</p>
+        <p>Describe your idea in natural language and let Claude AI build it for you</p>
       </div>
 
       {error && (
@@ -158,6 +175,19 @@ const Generator = () => {
               ))}
             </div>
           </div>
+
+          {daoContext && (
+            <div className="dao-context-banner">
+              <strong>Building on DAO Contract</strong>
+              <span className="dao-context-address">{daoContext.address}</span>
+              <button
+                className="dao-context-clear"
+                onClick={() => { setDaoContext(null); setPrompt(''); }}
+              >
+                Clear
+              </button>
+            </div>
+          )}
 
           <div className="form-group">
             <label>

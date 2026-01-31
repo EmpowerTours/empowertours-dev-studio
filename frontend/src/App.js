@@ -10,6 +10,7 @@ import Generator from './components/Generator';
 import MyApps from './components/MyApps';
 import Whitelist from './components/Whitelist';
 import Credits from './components/Credits';
+import DAOContracts from './components/DAOContracts';
 
 // Context
 import { NetworkProvider } from './context/NetworkContext';
@@ -83,6 +84,7 @@ function App() {
                   <Route path="/credits" element={
                     isConnected ? <Credits /> : <Navigate to="/" />
                   } />
+                  <Route path="/dao-contracts" element={<DAOContracts />} />
                 </Routes>
               </div>
 
@@ -95,8 +97,8 @@ function App() {
                     Monad
                   </a>
                   {' • '}
-                  <a href="https://x.ai" target="_blank" rel="noopener noreferrer">
-                    Grok AI
+                  <a href="https://anthropic.com" target="_blank" rel="noopener noreferrer">
+                    Claude AI
                   </a>
                   {' • '}
                   <a href="https://empowertours.com" target="_blank" rel="noopener noreferrer">

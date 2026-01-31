@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getCompileService } = require('../services/compileService');
+const { scanSourceCode, scanBytecode, createIntegrityHash, computeSecurityScore } = require('../services/contract-security');
 
 /**
  * POST /api/compile
@@ -60,11 +61,33 @@ router.post('/', async (req, res) => {
       gasEstimates[name] = compileService.estimateGas(contract.bytecode);
     }
 
+    // Security scanning on source and bytecode
+    const allSource = Object.values(contracts).join('\n');
+    const sourceReport = scanSourceCode(allSource);
+
+    const contractNames = Object.keys(result.contracts);
+    const mainContract = result.contracts[contractNames[0]];
+    const bytecodeReport = mainContract ? scanBytecode(mainContract.bytecode) : null;
+
+    const integrityHashes = mainContract
+      ? createIntegrityHash(allSource, mainContract.bytecode)
+      : null;
+
+    const securityScore = bytecodeReport
+      ? Math.round((sourceReport.score + bytecodeReport.score) / 2)
+      : sourceReport.score;
+
     res.json({
       success: true,
       contracts: result.contracts,
       gasEstimates,
       warnings: result.warnings,
+      securityReport: {
+        source: sourceReport,
+        bytecode: bytecodeReport,
+      },
+      integrityHashes,
+      securityScore,
       timestamp: new Date().toISOString()
     });
 

@@ -47,6 +47,7 @@ const Navbar = () => {
           <Link to="/my-apps" className="navbar-item">My Apps</Link>
           <Link to="/whitelist" className="navbar-item">Whitelist</Link>
           <Link to="/credits" className="navbar-item">Credits</Link>
+          <Link to="/dao-contracts" className="navbar-item">DAO Contracts</Link>
         </div>
 
         <div className="navbar-right">

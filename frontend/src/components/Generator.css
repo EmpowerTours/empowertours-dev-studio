@@ -238,6 +238,51 @@
   font-weight: bold;
 }
 
+/* DAO Context Banner */
+.dao-context-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  flex-wrap: wrap;
+}
+
+.dao-context-banner strong {
+  color: #10b981;
+}
+
+.dao-context-address {
+  font-family: monospace;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+}
+
+.dao-context-clear {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dao-context-clear:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .generator {

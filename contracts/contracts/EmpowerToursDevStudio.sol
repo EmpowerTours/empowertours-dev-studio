@@ -68,6 +68,12 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     /// @notice App metadata (IPFS CID)
     mapping(uint256 => string) private _appMetadata;
 
+    /// @notice Security scan score per NFT (0-100)
+    mapping(uint256 => uint256) public securityScore;
+
+    /// @notice DAO proposal ID reference (if dApp was built for a DAO-deployed contract)
+    mapping(uint256 => uint256) public daoProposalId;
+
     /// @notice User's first generation timestamp (for whitelist tracking)
     mapping(address => uint256) public firstGeneration;
 
@@ -88,7 +94,7 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     error InvalidAmount();
     error InsufficientPayment();
     error NoCredits();
-    error WhitelistClosed();
+    error WhitelistNotOpen();
     error WhitelistFull();
     error AlreadyWhitelisted();
     error NeedPaidPrompt();
@@ -185,12 +191,33 @@ contract EmpowerToursDevStudio is ERC721, Ownable, ReentrancyGuard {
     }
 
     /**
+     * @notice Set security score for an app NFT (backend only)
+     * @param tokenId NFT token ID
+     * @param score Security score (0-100)
+     */
+    function setSecurityScore(uint256 tokenId, uint256 score) external onlyOwner {
+        require(_ownerOf(tokenId) != address(0), "Nonexistent token");
+        require(score <= 100, "Score exceeds 100");
+        securityScore[tokenId] = score;
+    }
+
+    /**
+     * @notice Set DAO proposal reference for an app NFT (backend only)
+     * @param tokenId NFT token ID
+     * @param proposalId DAO factory proposal ID
+     */
+    function setDaoProposalId(uint256 tokenId, uint256 proposalId) external onlyOwner {
+        require(_ownerOf(tokenId) != address(0), "Nonexistent token");
+        daoProposalId[tokenId] = proposalId;
+    }
+
+    /**
      * @notice Mint whitelist NFT (first 1,000 paid users)
      * @param appMetadata IPFS CID for whitelist perks
      * @return tokenId Minted whitelist token ID
      */
     function mintWhitelistNFT(string memory appMetadata) external nonReentrant returns (uint256) {
-        if (!whitelistOpen) revert WhitelistClosed();
+        if (!whitelistOpen) revert WhitelistNotOpen();
         if (whitelistCounter >= WHITELIST_MAX) revert WhitelistFull();
         if (isWhitelisted[msg.sender]) revert AlreadyWhitelisted();
         if (firstGeneration[msg.sender] == 0) revert NeedPaidPrompt();

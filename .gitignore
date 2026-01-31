@@ -24,6 +24,12 @@ artifacts/
 deployments/
 typechain-types/
 
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/foundry.toml
+
 # Coverage
 coverage/
 .nyc_output/

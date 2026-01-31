@@ -84,7 +84,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="dashboard-hero">
         <h1>Welcome to EmpowerTours Dev Studio</h1>
-        <p>Build complete dApps from natural language prompts, powered by Grok AI</p>
+        <p>Build complete dApps from natural language prompts, powered by Claude AI</p>
       </div>
 
       {!isConnected ? (
@@ -186,6 +186,15 @@ export default function Dashboard() {
                     <p>Purchase more generation credits</p>
                   </div>
 
+                  <div
+                    className="action-card"
+                    onClick={() => navigate('/dao-contracts')}
+                  >
+                    <div className="action-icon">{'\uD83C\uDFDB\uFE0F'}</div>
+                    <h4>DAO Contracts</h4>
+                    <p>Build dApps on community-deployed contracts</p>
+                  </div>
+
                   {!stats.isWhitelisted && stats.whitelistSpots > 0 && (
                     <div
                       className="action-card highlight"
@@ -205,7 +214,7 @@ export default function Dashboard() {
                   <div className="feature-item">
                     <span className="feature-icon">🤖</span>
                     <h4>AI-Powered Generation</h4>
-                    <p>Grok AI creates production-ready smart contracts and frontends</p>
+                    <p>Claude AI creates production-ready smart contracts and frontends</p>
                   </div>
                   <div className="feature-item">
                     <span className="feature-icon">🔍</span>

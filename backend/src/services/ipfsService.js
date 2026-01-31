@@ -31,7 +31,7 @@ class IPFSService {
 
   /**
    * Upload generated code to IPFS
-   * @param {object} generatedCode The code object from Grok
+   * @param {object} generatedCode The code object from Claude
    * @param {object} metadata App metadata
    * @returns {string} IPFS CID
    */

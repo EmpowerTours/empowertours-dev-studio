@@ -12,7 +12,7 @@
     "deploy:mainnet": "cd contracts && npm run deploy:mainnet",
     "test": "cd contracts && npm test"
   },
-  "keywords": ["monad", "blockchain", "ai", "grok", "tourism", "dapp", "vrf"],
+  "keywords": ["monad", "blockchain", "ai", "claude", "tourism", "dapp", "vrf"],
   "author": "EmpowerTours",
   "license": "MIT",
   "devDependencies": {

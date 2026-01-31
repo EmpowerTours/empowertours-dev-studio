@@ -277,7 +277,7 @@ export default function Credits() {
               <div className="info-card">
                 <div className="info-icon">🤖</div>
                 <h4>AI Generation</h4>
-                <p>Each credit generates a complete dApp with smart contracts and frontend using Grok AI</p>
+                <p>Each credit generates a complete dApp with smart contracts and frontend using Claude AI</p>
               </div>
               <div className="info-card">
                 <div className="info-icon">📦</div>

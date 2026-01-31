@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getGrokService } = require('../services/grokService');
+const { getClaudeService } = require('../services/claudeService');
 const { getIPFSService } = require('../services/ipfsService');
 const { getContractManager } = require('../config/contract');
+const { scanSourceCode } = require('../services/contract-security');
 
 /**
  * POST /api/generate
@@ -45,9 +46,9 @@ router.post('/', async (req, res) => {
 
     console.log('✅ User has', credits, 'credits');
 
-    // Generate code with Grok
-    const grokService = getGrokService();
-    const generated = await grokService.generateDApp(prompt, appType, options);
+    // Generate code with Claude
+    const claudeService = getClaudeService();
+    const generated = await claudeService.generateDApp(prompt, appType, options);
 
     if (!generated.success) {
       return res.status(500).json({
@@ -58,6 +59,20 @@ router.post('/', async (req, res) => {
 
     console.log('✅ Code generated successfully');
     console.log('💰 API Cost:', generated.cost.totalCostUSD);
+
+    // Security scan on generated contracts
+    let securityReport = null;
+    if (generated.code && generated.code.contracts) {
+      const allSource = Object.values(generated.code.contracts).join('\n');
+      if (allSource.length > 0) {
+        securityReport = scanSourceCode(allSource);
+        console.log('🔒 Security scan:', {
+          passed: securityReport.passed,
+          score: securityReport.score,
+          criticals: securityReport.critical.length,
+        });
+      }
+    }
 
     // Upload to IPFS
     const ipfsService = getIPFSService();
@@ -94,6 +109,7 @@ router.post('/', async (req, res) => {
       code: generated.code,
       metadata: generated.metadata,
       cost: generated.cost,
+      securityReport,
       creditsRemaining: credits - 1,
       timestamp: generated.timestamp
     });
@@ -153,10 +169,10 @@ router.post('/preview', async (req, res) => {
       return res.status(400).json({ error: 'Prompt and appType required' });
     }
 
-    const grokService = getGrokService();
+    const claudeService = getClaudeService();
 
     // Generate with limited tokens for preview
-    const generated = await grokService.generateDApp(prompt, appType, {
+    const generated = await claudeService.generateDApp(prompt, appType, {
       maxTokens: 2000 // Limited preview
     });
 

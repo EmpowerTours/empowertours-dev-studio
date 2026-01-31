@@ -139,6 +139,31 @@ export const ApiProvider = ({ children }) => {
     }
   };
 
+  // Get DAO-deployed contracts
+  const getDAOContracts = async (deployedOnly = false) => {
+    try {
+      const params = deployedOnly ? '?deployed=true' : '';
+      const response = await axios.get(
+        `${API_URL}/api/dao-contracts${params}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  };
+
+  // Get specific DAO contract detail
+  const getDAOContractDetail = async (id) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/api/dao-contracts/${id}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  };
+
   const value = {
     generateDApp,
     getGeneratedApp,
@@ -148,7 +173,9 @@ export const ApiProvider = ({ children }) => {
     getHistory,
     getNFTMetadata,
     getUserNFTs,
-    getWhitelistStatus
+    getWhitelistStatus,
+    getDAOContracts,
+    getDAOContractDetail
   };
 
   return (

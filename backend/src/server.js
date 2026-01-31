@@ -11,6 +11,7 @@ const nftRoutes = require('./routes/nft');
 const compileRoutes = require('./routes/compile');
 const githubRoutes = require('./routes/github');
 const previewRoutes = require('./routes/preview');
+const daoContractsRoutes = require('./routes/dao-contracts');
 const authMiddleware = require('./middleware/auth');
 
 const app = express();
@@ -52,6 +53,7 @@ app.use('/api/nft', authMiddleware, nftRoutes);
 app.use('/api/compile', compileRoutes); // Public endpoint for compilation
 app.use('/api/github', githubRoutes); // GitHub integration
 app.use('/api/preview', previewRoutes); // Live preview server
+app.use('/api/dao-contracts', daoContractsRoutes); // DAO-deployed contracts browser
 
 // Error handling
 app.use((err, req, res, next) => {
