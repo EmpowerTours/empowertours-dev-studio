@@ -229,7 +229,7 @@ export default function MyApps() {
                     className="action-btn explorer"
                     onClick={() =>
                       window.open(
-                        `https://testnet.monadscan.com/address/${app.contractAddress}`,
+                        `https://monadscan.com/address/${app.contractAddress}`,
                         '_blank'
                       )
                     }

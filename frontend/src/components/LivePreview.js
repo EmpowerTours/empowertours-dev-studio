@@ -74,7 +74,7 @@ const LivePreview = ({ generatedCode, metadata }) => {
             <h4>What you'll get:</h4>
             <ul>
               <li>✅ Fully functional React app</li>
-              <li>✅ Connected to Monad Testnet</li>
+              <li>✅ Connected to Monad Mainnet</li>
               <li>✅ Real smart contract interactions</li>
               <li>✅ Preview available for 24 hours</li>
             </ul>
@@ -141,7 +141,7 @@ const LivePreview = ({ generatedCode, metadata }) => {
         <div className="preview-info">
           <h4>💡 Testing Tips:</h4>
           <ul>
-            <li>Connect your wallet to Monad Testnet</li>
+            <li>Connect your wallet to Monad Mainnet</li>
             <li>Interact with the deployed contract</li>
             <li>Test all features thoroughly</li>
             <li>Preview expires in 24 hours</li>

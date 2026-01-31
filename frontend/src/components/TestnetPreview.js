@@ -75,7 +75,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
       const mainContractName = contractNames[0];
       const contractData = compiled.contracts[mainContractName];
 
-      console.log('🚀 Deploying', mainContractName, 'to testnet...');
+      console.log('🚀 Deploying', mainContractName, 'to Monad Mainnet...');
 
       // Create contract factory
       const factory = new ethers.ContractFactory(
@@ -192,8 +192,8 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
   return (
     <div className="testnet-preview">
       <div className="preview-header">
-        <h2>🧪 Real Testnet Deployment</h2>
-        <p>Deploy and test your dApp on the actual Monad Testnet blockchain</p>
+        <h2>🚀 Mainnet Deployment</h2>
+        <p>Deploy and test your dApp on Monad Mainnet</p>
       </div>
 
       {error && (
@@ -250,11 +250,11 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
 
         {/* Deployment Section */}
         <div className="preview-card">
-          <h3>🚀 Deploy to Testnet</h3>
+          <h3>🚀 Deploy to Mainnet</h3>
 
           {!deployed ? (
             <>
-              <p>Deploy your smart contract to the real Monad Testnet.</p>
+              <p>Deploy your smart contract to Monad Mainnet.</p>
 
               <div className="deployment-info">
                 <div className="info-item">
@@ -269,7 +269,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
                 </div>
                 <div className="info-item">
                   <span className="label">Network:</span>
-                  <span className="value">Monad Testnet (41454)</span>
+                  <span className="value">Monad Mainnet (143)</span>
                 </div>
               </div>
 
@@ -278,7 +278,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
                 onClick={deployToTestnet}
                 disabled={deploying || !compiled || compiling}
               >
-                {deploying ? '⏳ Deploying to Testnet...' : '🚀 Deploy Contract'}
+                {deploying ? '⏳ Deploying to Mainnet...' : '🚀 Deploy Contract'}
               </button>
 
               {!compiled && (
@@ -288,7 +288,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
           ) : (
             <div className="deployment-success">
               <div className="success-icon">✅</div>
-              <h4>Deployed to Testnet!</h4>
+              <h4>Deployed to Mainnet!</h4>
 
               <div className="deployment-details">
                 <div className="detail-item">
@@ -307,7 +307,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
                 <div className="detail-item">
                   <span className="label">Transaction:</span>
                   <a
-                    href={`https://testnet.monadscan.com/tx/${deploymentTx}`}
+                    href={`https://monadscan.com/tx/${deploymentTx}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="link"
@@ -318,7 +318,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
                 <div className="detail-item">
                   <span className="label">Contract:</span>
                   <a
-                    href={`https://testnet.monadscan.com/address/${contractAddress}`}
+                    href={`https://monadscan.com/address/${contractAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="link"
@@ -414,7 +414,7 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
             </div>
             {deployed && (
               <div className="meta-item">
-                <span className="label">Testnet Address:</span>
+                <span className="label">Contract Address:</span>
                 <code className="value">{contractAddress}</code>
               </div>
             )}
@@ -438,20 +438,18 @@ const TestnetPreview = ({ generatedCode, metadata, tokenId }) => {
           <div className="info-box">
             <ol>
               <li>✅ Contracts compiled successfully</li>
-              <li>{deployed ? '✅' : '⏳'} Deploy to Monad Testnet</li>
+              <li>{deployed ? '✅' : '⏳'} Deploy to Monad Mainnet</li>
               <li>⏳ Test all contract functions</li>
-              <li>⏳ Verify contract on Monad Explorer</li>
+              <li>⏳ Verify contract on Monadscan</li>
               <li>⏳ Test frontend integration</li>
-              <li>⏳ Deploy to mainnet when ready</li>
             </ol>
           </div>
 
           {deployed && (
             <div className="mainnet-warning">
-              <h4>⚠️ Ready for Mainnet?</h4>
+              <h4>✅ Deployed to Mainnet</h4>
               <p>
-                Before deploying to mainnet, ensure you've thoroughly tested all functionality.
-                Mainnet deployment costs real MON tokens and is irreversible.
+                Your contract is live on Monad Mainnet. Verify it on Monadscan and test all functionality.
               </p>
             </div>
           )}

@@ -225,7 +225,7 @@ export default function Whitelist() {
                 <div className="success-message">
                   Transaction submitted!{' '}
                   <a
-                    href={`https://testnet.monadscan.com/tx/${txHash}`}
+                    href={`https://monadscan.com/tx/${txHash}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

@@ -253,7 +253,7 @@ export default function Credits() {
               <div className="success-message">
                 Purchase successful!{' '}
                 <a
-                  href={`https://testnet.monadscan.com/tx/${txHash}`}
+                  href={`https://monadscan.com/tx/${txHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -286,8 +286,8 @@ export default function Credits() {
               </div>
               <div className="info-card">
                 <div className="info-icon">🧪</div>
-                <h4>Testnet Deployment</h4>
-                <p>Deploy to Monad Testnet with one click to test your app</p>
+                <h4>Mainnet Deployment</h4>
+                <p>Deploy to Monad Mainnet with one click</p>
               </div>
               <div className="info-card">
                 <div className="info-icon">🔍</div>

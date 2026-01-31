@@ -152,7 +152,7 @@ const Generator = () => {
               className={`tab ${activeTab === 'testnet' ? 'active' : ''}`}
               onClick={() => setActiveTab('testnet')}
             >
-              🧪 Testnet Preview
+              🚀 Deploy Preview
             </button>
           </>
         )}

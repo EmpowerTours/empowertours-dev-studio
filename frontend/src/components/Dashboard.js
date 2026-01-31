@@ -223,8 +223,8 @@ export default function Dashboard() {
                   </div>
                   <div className="feature-item">
                     <span className="feature-icon">🧪</span>
-                    <h4>Testnet Deployment</h4>
-                    <p>Deploy to Monad Testnet with one click</p>
+                    <h4>Mainnet Deployment</h4>
+                    <p>Deploy to Monad Mainnet with one click</p>
                   </div>
                   <div className="feature-item">
                     <span className="feature-icon">📦</span>

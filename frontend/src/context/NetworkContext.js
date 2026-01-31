@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 
 const NetworkContext = createContext();
 
@@ -11,18 +11,6 @@ export const useNetwork = () => {
 };
 
 export const NETWORKS = {
-  TESTNET: {
-    name: 'Monad Testnet',
-    chainId: '0x279f', // 10143
-    chainIdInt: 10143,
-    rpcUrl: 'https://rpc-testnet.monadinfra.com/',
-    explorerUrl: 'https://testnet.monadscan.com',
-    nativeCurrency: {
-      name: 'MON',
-      symbol: 'MON',
-      decimals: 18
-    }
-  },
   MAINNET: {
     name: 'Monad Mainnet',
     chainId: '0x8f', // 143
@@ -38,37 +26,18 @@ export const NETWORKS = {
 };
 
 export const NetworkProvider = ({ children }) => {
-  const [currentNetwork, setCurrentNetwork] = useState(() => {
-    // Load from localStorage or default to testnet
-    const saved = localStorage.getItem('selectedNetwork');
-    return saved === 'MAINNET' ? 'MAINNET' : 'TESTNET';
-  });
+  const currentNetwork = 'MAINNET';
+  const networkConfig = NETWORKS.MAINNET;
 
-  useEffect(() => {
-    // Save to localStorage whenever it changes
-    localStorage.setItem('selectedNetwork', currentNetwork);
-  }, [currentNetwork]);
-
-  const switchNetwork = (network) => {
-    if (network !== 'TESTNET' && network !== 'MAINNET') {
-      console.error('Invalid network:', network);
-      return;
-    }
-    setCurrentNetwork(network);
+  const switchNetwork = () => {
+    // Mainnet only — no-op
   };
-
-  const getNetworkConfig = () => {
-    return NETWORKS[currentNetwork];
-  };
-
-  const isTestnet = currentNetwork === 'TESTNET';
-  const isMainnet = currentNetwork === 'MAINNET';
 
   const value = {
     currentNetwork,
-    networkConfig: getNetworkConfig(),
-    isTestnet,
-    isMainnet,
+    networkConfig,
+    isTestnet: false,
+    isMainnet: true,
     switchNetwork,
     NETWORKS
   };

@@ -9,23 +9,12 @@ import './Navbar.css';
 const Navbar = () => {
   const { account, isConnected, isCorrectNetwork, connectWallet, disconnectWallet, switchToNetwork, loading } = useWallet();
   const { credits, isWhitelisted } = useContract();
-  const { currentNetwork, switchNetwork, isTestnet, isMainnet } = useNetwork();
+  const { currentNetwork } = useNetwork();
   const { theme, toggleTheme } = useTheme();
 
   const formatAddress = (address) => {
     if (!address) return '';
     return `${address.substring(0, 6)}...${address.substring(38)}`;
-  };
-
-  const handleNetworkSwitch = () => {
-    const newNetwork = isTestnet ? 'MAINNET' : 'TESTNET';
-    switchNetwork(newNetwork);
-    // Trigger wallet network switch if connected
-    if (isConnected) {
-      setTimeout(() => {
-        switchToNetwork();
-      }, 100);
-    }
   };
 
   return (
@@ -51,21 +40,6 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-right">
-          <div className="network-switch">
-            <button
-              className={`network-option ${isTestnet ? 'active' : ''}`}
-              onClick={() => isMainnet && handleNetworkSwitch()}
-            >
-              Testnet
-            </button>
-            <button
-              className={`network-option ${isMainnet ? 'active' : ''}`}
-              onClick={() => isTestnet && handleNetworkSwitch()}
-            >
-              Mainnet
-            </button>
-          </div>
-
           {isConnected && (
             <div className="navbar-info">
               {isWhitelisted && <span className="whitelist-badge">⭐ Whitelisted</span>}
@@ -86,12 +60,12 @@ const Navbar = () => {
               className="network-button wrong-network"
               onClick={switchToNetwork}
             >
-              Switch to {currentNetwork === 'TESTNET' ? 'Testnet' : 'Mainnet'}
+              Switch to Monad Mainnet
             </button>
           ) : (
             <div className="wallet-info">
-              <span className={`network-indicator ${isTestnet ? 'testnet' : 'mainnet'}`}>
-                {currentNetwork === 'TESTNET' ? 'Monad Testnet' : 'Monad Mainnet'}
+              <span className="network-indicator mainnet">
+                Monad Mainnet
               </span>
               <button className="address-button" onClick={disconnectWallet}>
                 {formatAddress(account)}
